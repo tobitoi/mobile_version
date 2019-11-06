@@ -43,30 +43,33 @@ class ItemListPage extends StatelessWidget {
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.edit, color: Colors.blue),
-                  onPressed:() => Navigator.of(context).push(
+                  onPressed:() => Navigator.push(context,
                       MaterialPageRoute(
-                        builder: (context) {
-                          return FormAddItem(
-                            key: ArchSampleKeys.editItemScreen,
-                            onSave: (itemName, serialNumber, ip, status,category, location, date, desc) {
-                             BlocProvider.of<ItemBloc>(context).add(
-                                UpdateItem(
-                                 items.copyWith(
-                                   itemName: itemName,
-                                   serialNumber: serialNumber,
-                                   ipAddress: ip,
-                                   status: status,
-                                   category: category,
-                                   location: location,
-                                   dateCreation: date,
-                                   description: desc
-                                 ),
-                                ),    
-                              );                             
-                            },
-                            isEditing: true,
-                            item: items,                           
-                          );
+                        builder: (_) {
+                          return BlocProvider.value(
+                            value: BlocProvider.of<ItemBloc>(context),
+                            child: FormAddItem(
+                              key: ArchSampleKeys.editItemScreen,
+                              onSave: (itemName, serialNumber, ip, status,category, location, date, desc) {
+                              BlocProvider.of<ItemBloc>(context).add(
+                                  UpdateItem(
+                                  items.copyWith(
+                                    itemName: itemName,
+                                    serialNumber: serialNumber,
+                                    ipAddress: ip,
+                                    status: status,
+                                    category: category,
+                                    location: location,
+                                    dateCreation: date,
+                                    description: desc
+                                  ),
+                                  ),    
+                                );                             
+                              },
+                              isEditing: true,
+                              item: items,                           
+                            )
+                          ); 
                         },
                       ),
                     )

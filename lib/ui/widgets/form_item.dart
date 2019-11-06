@@ -282,10 +282,10 @@ class _FormAddItemScreenState extends State<FormAddItem> {
           )).toList(),
           onChanged: (selectedStatusType) {          
             setState(() {
-              _status = selectedStatusType;
+              selectedStatus = selectedStatusType;
             });
           },
-          value: _status,
+          value: selectedStatus,
           isExpanded: false,
           hint: Text(
           'Choose Status',
