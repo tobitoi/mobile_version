@@ -56,12 +56,54 @@ class ArchSampleLocalizations {
         locale: locale.toString(),
       );
 
-  String get newTodoHint => Intl.message(
-        'What needs to be done?',
-        name: 'newTodoHint',
+  String get newItemNameHint => Intl.message(
+        'Item Name',
+        name: 'newItemNameHint',
         args: [],
         locale: locale.toString(),
       );
+  String get newSerialNumberHint => Intl.message(
+        'Serial Number',
+        name: 'newSerialNumberHint',
+        args: [],
+        locale: locale.toString(),
+      );    
+  String get newIpAddressHint => Intl.message(
+        'Ip Address',
+        name: 'newIpAddressHint',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get newCategoryHint => Intl.message(
+        'Category',
+        name: 'newCategoryHint',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get newStatusHint => Intl.message(
+        'Status',
+        name: 'newStatusHint',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get newLocationHint => Intl.message(
+        'Location',
+        name: 'newLocationHint',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get newDOPHint => Intl.message(
+        'Date Of Procurement',
+        name: 'newDOPHint',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get newDescHint => Intl.message(
+        'Description',
+        name: 'newDescHint',
+        args: [],
+        locale: locale.toString(),
+      );        
 
   String get markAllComplete => Intl.message(
         'Mark all complete',
@@ -91,9 +133,9 @@ class ArchSampleLocalizations {
         locale: locale.toString(),
       );
 
-  String get editTodo => Intl.message(
-        'Edit Todo',
-        name: 'editTodo',
+  String get editItem => Intl.message(
+        'Edit Item',
+        name: 'editItem',
         args: [],
         locale: locale.toString(),
       );
@@ -126,13 +168,55 @@ class ArchSampleLocalizations {
         locale: locale.toString(),
       );
 
-  String get emptyTodoError => Intl.message(
-        'Please enter some text',
-        name: 'emptyTodoError',
+  String get emptyItemNameError => Intl.message(
+        'Please enter item name',
+        name: 'emptyItemNameError',
         args: [],
         locale: locale.toString(),
       );
 
+  String get emptySerialError => Intl.message(
+        'Please enter serial number',
+        name: 'emptySerialError',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get emptyIpAddressError => Intl.message(
+        'Please enter ip address',
+        name: 'emptyIpAddressError',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get emptyCategoryError => Intl.message(
+        'Please choose category',
+        name: 'emptyCategoryError',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get emptyStatusError => Intl.message(
+        'Please choose status',
+        name: 'emptyStatusError',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get emptLocationError => Intl.message(
+        'Please enter location',
+        name: 'emptLocationError',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get emptDOPError => Intl.message(
+        'Please enter Date of Prcurement',
+        name: 'emptDOPError',
+        args: [],
+        locale: locale.toString(),
+      );
+  String get emptDescError => Intl.message(
+        'Please enter Description',
+        name: 'emptDescError',
+        args: [],
+        locale: locale.toString(),
+      );      
   String get notesHint => Intl.message(
         'Additional Notes...',
         name: 'notesHint',

@@ -48,7 +48,7 @@ class ArchSampleKeys {
   // Add Screen
   static final addItemScreen = const Key('__addItemScreen__');
   static final saveNewItem = const Key('__saveNewItem__');
-  static final taskField = const Key('__taskField__');
+  static final itemFieldName = const Key('__itemFieldName__');
   static final noteField = const Key('__noteField__');
 
   // Edit Screen

@@ -18,7 +18,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static _notInlinedMessages(_) => {
         "activeTodos": MessageLookupByLibrary.simpleMessage("Active Todos"),
-        "addTodo": MessageLookupByLibrary.simpleMessage("Add Todo"),
+        "addItem": MessageLookupByLibrary.simpleMessage("Add Item"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "clearCompleted":
             MessageLookupByLibrary.simpleMessage("Clear completed"),
@@ -28,7 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteTodo": MessageLookupByLibrary.simpleMessage("Delete Todo"),
         "deleteTodoConfirmation":
             MessageLookupByLibrary.simpleMessage("Delete this todo?"),
-        "editTodo": MessageLookupByLibrary.simpleMessage("Edit Todo"),
+        "editItem": MessageLookupByLibrary.simpleMessage("Edit Item"),
         "emptyTodoError":
             MessageLookupByLibrary.simpleMessage("Please enter some text"),
         "filterTodos": MessageLookupByLibrary.simpleMessage("Filter Todos"),

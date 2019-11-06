@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_version/bloc/auth/auth.dart';
 import 'package:mobile_version/bloc/item/item.dart';
 import 'package:mobile_version/data/class/class.dart';
 import 'package:mobile_version/data/config/config.dart';
@@ -41,22 +42,7 @@ class _ItemScreenState extends State<ItemPage> {
        appBar: AppBar
       (
         elevation: 2.0,
-        title: Text(
-          "Item",
-          textScaleFactor: textScaleFactor,
-        ),  actions: <Widget>
-        [
-          Container
-          (
-            margin: EdgeInsets.only(right: 8.0),
-            child: Row
-            (
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              
-            ),
-          )
-        ],
+        title: Text( "Item",textScaleFactor: textScaleFactor), 
       ),
       drawer: AppDrawer(),
       body: BlocBuilder<ItemBloc, ItemState>(

@@ -46,11 +46,10 @@ class ItemListPage extends StatelessWidget {
                   onPressed:() => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) {
-                          print("itm ${items.copyWith()}");
                           return FormAddItem(
                             key: ArchSampleKeys.editItemScreen,
                             onSave: (itemName, serialNumber, ip, status,category, location, date, desc) {
-                              BlocProvider.of<ItemBloc>(context).add(
+                             BlocProvider.of<ItemBloc>(context).add(
                                 UpdateItem(
                                  items.copyWith(
                                    itemName: itemName,
@@ -61,15 +60,12 @@ class ItemListPage extends StatelessWidget {
                                    location: location,
                                    dateCreation: date,
                                    description: desc
-                                 )
-                                ),
-                                
-                              );
-                             
+                                 ),
+                                ),    
+                              );                             
                             },
                             isEditing: true,
-                            item: items,
-                            
+                            item: items,                           
                           );
                         },
                       ),

@@ -14,6 +14,7 @@ import 'common/common.dart';
 import 'ui/home/home.dart';
 import 'ui/item/item.dart';
 import 'ui/splash/splash.dart';
+import 'utils/utils.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -59,7 +60,11 @@ class App extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Mobile Version',
+        title: FlutterBlocLocalizations().appTitle,
+        localizationsDelegates: [
+          ArchSampleLocalizationsDelegate(),
+          FlutterBlocLocalizationsDelegate(),
+        ],
         routes: {
           '/': (context) {
             return BlocBuilder<AuthenticationBloc, AuthenticationState>(

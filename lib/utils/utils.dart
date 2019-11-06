@@ -4,3 +4,4 @@ export './date_time_utils.dart';
 export './keys.dart';
 export './messages_all.dart';
 export './messages_en.dart';
+export './localizations.dart';

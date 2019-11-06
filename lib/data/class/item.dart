@@ -107,27 +107,4 @@ class Item{
 
     );
   }
-
-  Item coba (
-    String itemName,
-    String ipAddress,
-    String location,
-    String status,
-    String serialNumber,
-    String description,
-    String dateCretion,
-    Category category,
-  ){
-    return Item(
-      id: id ?? this.id,
-      itemName: itemName ?? this.itemName,
-      ipAddress: ipAddress ?? this.ipAddress,
-      location: location ?? this.location,
-      status: status ?? this.status,
-      serialNumber: serialNumber ?? this.serialNumber,
-      description: description ?? this.description,
-      dateCreation: dateCreation ?? this.dateCreation,
-      category: category ?? this.category,
-    );
-  }
 }

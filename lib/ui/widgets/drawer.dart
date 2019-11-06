@@ -32,10 +32,8 @@ class AppDrawer extends StatelessWidget {
                         textScaleFactor: textScaleFactor,
                         maxLines: 1,
                       ),
-                      // onTap: () {
-                      //   Navigator.of(context).popAndPushNamed("/myaccount");
-                      // },
                     );
+                    
                   }
                   return Center(child: CircularProgressIndicator());
                 }
@@ -61,7 +59,7 @@ class AppDrawer extends StatelessWidget {
               ),
               onTap: () => 
                SchedulerBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).pop();
+                Navigator.of(context).popAndPushNamed("/");
                 authenticationBloc.add(LoggedOut());
               })
             ),
