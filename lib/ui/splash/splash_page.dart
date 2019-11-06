@@ -7,9 +7,8 @@ class SplashPage extends StatelessWidget {
       body: Center(
         child:Stack(
           children: <Widget>[
-          Image.asset('assets/icons/favicon.png',
-                    fit: BoxFit.cover,
-                    )
+          
+          Text("splashh")
           ],
         ),
       )

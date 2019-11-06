@@ -43,13 +43,7 @@ class _LoginFormState extends State<LoginForm> {
             child: ListView(
               physics: AlwaysScrollableScrollPhysics(),
               children: <Widget>[
-                SizedBox(
-                  height: 230,
-                  child: Container(
-                    padding: EdgeInsets.all(50),
-                    child: image
-                  ),  
-                ),
+                
                 Form(
                   child: Padding(
                     padding: EdgeInsets.all(10.0),
