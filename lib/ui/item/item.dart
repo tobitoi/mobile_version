@@ -2,10 +2,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_version/bloc/auth/auth.dart';
 import 'package:mobile_version/bloc/item/item.dart';
 import 'package:mobile_version/data/class/class.dart';
-import 'package:mobile_version/data/config/config.dart';
+import 'package:provider/provider.dart';
 import 'package:mobile_version/ui/widgets/widgets.dart';
 import 'package:mobile_version/utils/utils.dart';
 import 'item_list.dart';
@@ -18,8 +17,10 @@ class ItemPage extends StatefulWidget {
 
 class _ItemScreenState extends State<ItemPage> {
   ScrollController controller = ScrollController();
+  final _searchController = new TextEditingController();
+  bool _isSearching = false;
   final _scrollThreshold = 200.0;
-
+  List<Item> displayedList;
   ItemBloc bloc;
 
   void onScroll(){
@@ -42,7 +43,45 @@ class _ItemScreenState extends State<ItemPage> {
        appBar: AppBar
       (
         elevation: 2.0,
-        title: Text( "Item",textScaleFactor: textScaleFactor), 
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: "Cari Item",
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                style: TextStyle(color: Colors.white),
+                onChanged: (itemNames){
+                  BlocProvider.of<ItemBloc>(context).add(SearchItem(itemName: _searchController.text));
+                },
+              )
+            : Text('Item', style: TextStyle(color: Colors.white)),
+        
+        actions: <Widget>[
+          _isSearching
+              ? IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = false;
+                      _searchController.text = "";
+                        bloc.add(ItemLoad());
+                    });
+                  })
+              : IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                      bloc.add(SearchItem(itemName: _searchController.text));
+                    });
+                  }),
+        ],
       ),
       drawer: AppDrawer(),
       body: BlocBuilder<ItemBloc, ItemState>(
@@ -55,23 +94,18 @@ class _ItemScreenState extends State<ItemPage> {
             if (state is ItemLoaded){
               if(state.items.isEmpty){
                 return Center(
-                  child: Text('no posts'),
+                  child: Text('no Items'),
                 );
               }
+              ItemLoaded itemloaded = state;
               return ListView.builder(
-                itemBuilder: (BuildContext context, int index){
-                  return index >= state.items.length
-                  ? _bottomLoader(context)
-                  : ItemListPage(
-                    items: state.items[index],
-                     onDeletePressed: (id){
-                       BlocProvider.of<ItemBloc>(context).add(Delete(id: id));
-                     } 
-                    );
-                },
-                itemCount: state.hasReachedMax
-                ? state.items.length
-                : state.items.length + 1,
+                itemCount: (itemloaded.hasReachedMax) ? itemloaded.items.length : itemloaded.items.length + 1,
+                itemBuilder: (context, index) =>  (index < itemloaded.items.length) ?
+                ItemListPage(
+                  items: state.items[index], 
+                  onDeletePressed:(id)=> BlocProvider.of<ItemBloc>(context).add(Delete(id: id))
+                ):_bottomLoader(context),
+                
                 controller: controller
               ); 
             }
@@ -110,6 +144,7 @@ class _ItemScreenState extends State<ItemPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
+
 
   Widget _bottomLoader(BuildContext context) {
     return Container(

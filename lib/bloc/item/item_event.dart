@@ -53,3 +53,12 @@ class UpdateItem extends ItemEvent {
   @override
   String toString() => 'updateItem { updateItem: $updateItem }';
 }
+
+class SearchItem extends ItemEvent {
+  final String itemName;
+
+  const SearchItem({@required this.itemName}) : assert(itemName != null);
+  
+  @override
+  List<Object> get props => [itemName];
+}

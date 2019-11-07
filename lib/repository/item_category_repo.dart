@@ -25,4 +25,7 @@ class ItemCategoryRepos {
     return _itemCategoryApi.updateItem(itemRequest);
   }
 
+  Future <List<Item>> searhItemRepos(String name ){
+    return _itemCategoryApi.getItembyName(name);
+  }
 }

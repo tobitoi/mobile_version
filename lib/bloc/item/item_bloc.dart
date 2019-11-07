@@ -50,6 +50,10 @@ class ItemBloc extends Bloc<ItemEvent, ItemState>{
         yield ItemError();
       }
     }
+    if (event is SearchItem){
+      final items = await itemCategoryRepos.searhItemRepos(event.itemName);
+      yield ItemLoaded(items: items, hasReachedMax: false);    
+    }
     if(event is Delete){
       final itemState = state;
       if (itemState is ItemLoaded){

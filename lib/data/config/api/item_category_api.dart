@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:mobile_version/data/class/class.dart';
 import 'package:mobile_version/data/response/response..dart';
 
@@ -17,6 +16,17 @@ class ItemCategoryApi {
      throw response.statusMessage;
     }
   }
+
+   Future <List<Item>> getItembyName(String itemName) async {
+      String itemUrls = itemUrl + "?itemName=" +itemName;
+      final response = await _baseApi.dio.get(itemUrls);
+      if (response.statusCode == 200){
+        return ItemResponse.fromJson(response.data).content;
+      }else{
+      throw response.statusMessage;
+      }
+   }
+    
 
   Future <bool> updateItem(Item itemRequest) async {
     final response = await _baseApi.dio.put(

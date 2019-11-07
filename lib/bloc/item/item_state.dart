@@ -32,5 +32,5 @@ class ItemLoaded extends ItemState {
 
   @override
   String toString() =>
-      'PostLoaded { contents: ${items.length}, hasReachedMax: $hasReachedMax }';
+      'ItemLoad { contents: ${items.length}, hasReachedMax: $hasReachedMax }';
 }
