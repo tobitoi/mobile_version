@@ -30,9 +30,17 @@ class _ItemScreenState extends State<ItemPage> {
       bloc.add(ItemLoad());
     } 
   }
+  void onSearch(String newText){
+    if (newText.isEmpty){
+       bloc.add(ItemLoad());
+    }else{
+      bloc.add(SearchItem(itemName:newText));
+    }
+  }
   @override
   void dispose() {
     controller.dispose();
+    _searchController.dispose();
     super.dispose();
   }
   @override
@@ -56,9 +64,7 @@ class _ItemScreenState extends State<ItemPage> {
                   hintStyle: TextStyle(color: Colors.white),
                 ),
                 style: TextStyle(color: Colors.white),
-                onChanged: (itemNames){
-                  BlocProvider.of<ItemBloc>(context).add(SearchItem(itemName: _searchController.text));
-                },
+                onChanged: onSearch,
               )
             : Text('Item', style: TextStyle(color: Colors.white)),
         
@@ -70,15 +76,14 @@ class _ItemScreenState extends State<ItemPage> {
                     setState(() {
                       _isSearching = false;
                       _searchController.text = "";
-                        bloc.add(ItemLoad());
+                        onSearch("");
                     });
                   })
               : IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
                     setState(() {
-                      _isSearching = true;
-                      bloc.add(SearchItem(itemName: _searchController.text));
+                      _isSearching = true;                      
                     });
                   }),
         ],

@@ -51,8 +51,10 @@ class ItemBloc extends Bloc<ItemEvent, ItemState>{
       }
     }
     if (event is SearchItem){
+      ItemLoaded itemLoaded = state as ItemLoaded;
+      int nextPage = itemLoaded.items.length ~/ 20 + 1;
       final items = await itemCategoryRepos.searhItemRepos(event.itemName);
-      yield ItemLoaded(items: items, hasReachedMax: false);    
+      yield ItemLoaded(items: items, hasReachedMax: items.length < nextPage ? true : false);    
     }
     if(event is Delete){
       final itemState = state;
