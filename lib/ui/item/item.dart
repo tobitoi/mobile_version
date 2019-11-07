@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_version/bloc/auth/auth.dart';
 import 'package:mobile_version/bloc/item/item.dart';
 import 'package:mobile_version/data/class/class.dart';
 import 'package:provider/provider.dart';
@@ -32,8 +34,8 @@ class _ItemScreenState extends State<ItemPage> {
   }
   void onSearch(String newText){
     if (newText.isEmpty){
-       bloc.add(ItemLoad());
-    }else{
+      bloc.add(ClearItem());
+    }else{    
       bloc.add(SearchItem(itemName:newText));
     }
   }
@@ -46,6 +48,8 @@ class _ItemScreenState extends State<ItemPage> {
   @override
   Widget build(BuildContext context) {
     bloc = BlocProvider.of<ItemBloc>(context);
+    final AuthenticationBloc authenticationBloc =
+        BlocProvider.of<AuthenticationBloc>(context);
     controller.addListener(onScroll);
     return Scaffold(
        appBar: AppBar
@@ -93,13 +97,22 @@ class _ItemScreenState extends State<ItemPage> {
           builder: (context, state){
             if (state is ItemError) {
               return Center(
-                child: Text('Oops something went wrong!'),
-              );
+                child: RaisedButton(
+                  child: Text("Your Session is expired please relogin !"),         
+                  onPressed: () {
+                    print("error item");
+                      SchedulerBinding.instance.addPostFrameCallback((_) {
+                      Navigator.of(context).popAndPushNamed("/");
+                      authenticationBloc.add(LoggedOut());
+                    });
+                  },
+                ),
+              );  
             }
             if (state is ItemLoaded){
               if(state.items.isEmpty){
                 return Center(
-                  child: Text('no Items'),
+                  child: Text('No Items'),
                 );
               }
               ItemLoaded itemloaded = state;

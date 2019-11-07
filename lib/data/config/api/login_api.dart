@@ -20,6 +20,7 @@ class LoginApi {
     if (response.statusCode == 200){
       return LoginResponse.fromJson(response.data);
     }else{
+      print(response.statusMessage);
      throw response.statusMessage;
     }
   }

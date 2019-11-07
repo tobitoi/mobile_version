@@ -8,6 +8,8 @@ abstract class ItemEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class ClearItem extends ItemEvent {}
+
 class ItemLoad extends ItemEvent {}
 
 class Delete extends ItemEvent {

@@ -31,14 +31,13 @@ class ItemBloc extends Bloc<ItemEvent, ItemState>{
 
   @override
   Stream<ItemState> mapEventToState(ItemEvent event) async* {
-  
     final currentState = state;
-    if (event is ItemLoad && !_hasReachedMax(currentState)){
+    if (event is ItemLoad  && !_hasReachedMax(currentState)){
       try{
-         if(state is ItemUninitialized){
+         if (state is ItemUninitialized){
           final contents = await itemCategoryRepos.getItemRepo(0, 20);
           yield ItemLoaded(items: contents, hasReachedMax: false);
-        }else{
+        } else {
           ItemLoaded itemLoaded = state as ItemLoaded;
           int nextPage = itemLoaded.items.length ~/ 20 + 1;
           final contents = await itemCategoryRepos.getItemRepo(nextPage, 20);  
@@ -46,17 +45,25 @@ class ItemBloc extends Bloc<ItemEvent, ItemState>{
           ? itemLoaded.copyWith(hasReachedMax: true) 
           : ItemLoaded(items: itemLoaded.items + contents, hasReachedMax: false);
         }
+      } catch(_) {
+        yield ItemError();
+      }
+    }
+    if (event is SearchItem) {
+      final items = await itemCategoryRepos.searhItemRepos(event.itemName);
+      yield ItemLoaded(items: items, hasReachedMax: items.length < 20 ? true : false);    
+    } 
+    if (event is ClearItem) {
+      try{ 
+        ItemLoaded itemLoaded = state as ItemLoaded;
+        int nextPage = itemLoaded.items.length ~/ 20 + 1;
+        final contents = await itemCategoryRepos.getItemRepo(0, 20);
+        yield ItemLoaded(items: contents, hasReachedMax: contents.length < nextPage ? true : false);
       }catch(_){
         yield ItemError();
       }
     }
-    if (event is SearchItem){
-      ItemLoaded itemLoaded = state as ItemLoaded;
-      int nextPage = itemLoaded.items.length ~/ 20 + 1;
-      final items = await itemCategoryRepos.searhItemRepos(event.itemName);
-      yield ItemLoaded(items: items, hasReachedMax: items.length < nextPage ? true : false);    
-    }
-    if(event is Delete){
+    if (event is Delete) {
       final itemState = state;
       if (itemState is ItemLoaded){
         List<Item> updateContents = List<Item>.from(itemState.items).map((Item content){
@@ -76,24 +83,23 @@ class ItemBloc extends Bloc<ItemEvent, ItemState>{
         yield ItemLoaded(items: updateContents, hasReachedMax: false );
       }
     }
-    if(event is AddItem){
+    if (event is AddItem) {
       final addItemState = state;
-      if( addItemState is ItemLoaded){
+      if (addItemState is ItemLoaded) {
         final List<Item> updateContens = List<Item>.from(addItemState.items);
          yield ItemLoaded(items: updateContens, hasReachedMax: false);
         _saveItem(event.request);
       }
     }
-    if(event is AddItem){
+    if (event is AddItem) {
       final addItemState = state;
       if( addItemState is ItemLoaded){
         final List<Item> updateContens = List<Item>.from(addItemState.items)
           ..add(event.request);
-         yield ItemLoaded(items: updateContens, hasReachedMax: false);
-        
+         yield ItemLoaded(items: updateContens, hasReachedMax: false);      
       }
     }
-    if (event is UpdateItem){
+    if (event is UpdateItem) {
       yield* _mapUpdateItemToState(event);
     }
   }
