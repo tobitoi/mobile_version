@@ -69,7 +69,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState>{
         List<Item> updateContents = List<Item>.from(itemState.items).map((Item content){
           return content.id == event.id ? content.copyWith(isDeleting: true) : content;
         }).toList();
-        yield ItemLoaded(items: updateContents, hasReachedMax: false);
+        yield ItemLoaded(items: updateContents, hasReachedMax: updateContents.length < 20 ? true : false);
         itemCategoryRepos.deleteItemRepos(event.id).listen((id){
           add(Deleted(id: id));
         });
@@ -80,14 +80,14 @@ class ItemBloc extends Bloc<ItemEvent, ItemState>{
       if (itemState is ItemLoaded) {
         final List<Item> updateContents = List<Item>.from(itemState.items)
           ..removeWhere((item) => item.id == event.id);
-        yield ItemLoaded(items: updateContents, hasReachedMax: false );
+        yield ItemLoaded(items: updateContents, hasReachedMax:  updateContents.length < 20 ? true : false );
       }
     }
     if (event is AddItem) {
       final addItemState = state;
       if (addItemState is ItemLoaded) {
         final List<Item> updateContens = List<Item>.from(addItemState.items);
-         yield ItemLoaded(items: updateContens, hasReachedMax: false);
+         yield ItemLoaded(items: updateContens, hasReachedMax: updateContens.length < 20 ? true : false);
         _saveItem(event.request);
       }
     }
@@ -96,7 +96,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState>{
       if( addItemState is ItemLoaded){
         final List<Item> updateContens = List<Item>.from(addItemState.items)
           ..add(event.request);
-         yield ItemLoaded(items: updateContens, hasReachedMax: false);      
+         yield ItemLoaded(items: updateContens, hasReachedMax: updateContens.length < 20 ? true : false);      
       }
     }
     if (event is UpdateItem) {

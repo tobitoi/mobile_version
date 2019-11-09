@@ -20,7 +20,7 @@ class AuthenticationBloc
   ) async* {
     if (event is AppStarted) {
       final bool hasToken = await userRepo.hasToken();
-      print("toen $hasToken");
+      
       if (hasToken) {
          final data = await userRepo.getuser();
         yield AuthenticationAuthenticated(data.username, data.email, data.avatar);

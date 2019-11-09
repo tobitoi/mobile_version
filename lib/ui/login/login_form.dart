@@ -31,7 +31,7 @@ class _LoginFormState extends State<LoginForm> {
         if (state is LoginFailure) {
           Scaffold.of(context).showSnackBar(
             SnackBar(
-              content: Text('${state.error}'),
+              content: Text('${state.error.substring(33)}'),
               backgroundColor: Colors.red,
             ),
           );
@@ -43,7 +43,13 @@ class _LoginFormState extends State<LoginForm> {
             child: ListView(
               physics: AlwaysScrollableScrollPhysics(),
               children: <Widget>[
-                
+                SizedBox(
+                  height: 230,
+                  child: Container(
+                    padding: EdgeInsets.all(50),
+                    child: image
+                  ),  
+                ),
                 Form(
                   child: Padding(
                     padding: EdgeInsets.all(10.0),
@@ -54,7 +60,7 @@ class _LoginFormState extends State<LoginForm> {
                       Container(
                         padding: EdgeInsets.all(10),
                         child: FlatButton(
-                          padding: EdgeInsets.symmetric(horizontal: 160.0),
+                         
                           shape: RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(10.0) ),
                           onPressed:
