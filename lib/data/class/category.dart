@@ -21,4 +21,7 @@ class Category {
     data['label'] = this.label;
     return data;
   }
+
+  bool operator ==(o) => o is Category && o.categoryName == categoryName;
+  int get hashCode => categoryName.hashCode;
 }

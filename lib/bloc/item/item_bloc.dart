@@ -109,7 +109,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState>{
       final List<Item> updateditems = (state as ItemLoaded).items.map((item) {
         return item.id == event.updateItem.id ? event.updateItem : item;
       }).toList();
-      yield ItemLoaded(items:updateditems,  hasReachedMax: false );
+      yield ItemLoaded(items:updateditems,  hasReachedMax: updateditems.length < 20 ? true : false );
       _saveEditItem(event.updateItem);
     }
   }

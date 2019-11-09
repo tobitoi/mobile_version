@@ -231,21 +231,22 @@ class _FormAddItemScreenState extends State<FormAddItem> {
         child: DropdownButtonHideUnderline(
           child: DropdownButton<Category>(
             isDense: true,
-            items: catContent
+            items: catContent?.isNotEmpty == true ? catContent
           .map((value) => DropdownMenuItem<Category>(
               child: Text(
               value.categoryName
             ),
             value: value
-          )).toList(),          
+          )).toList() : const[],          
           onChanged: (Category selectedCat) {
             setState(() {
               selectedCategory = selectedCat;
+              print("selected ${selectedCategory.toString()}");
             });
           },
           
           isExpanded: false,
-          value: selectedCategory,
+          value: isEditing ? widget.item.category : selectedCategory,
           hint: Text(
           'Choose Category',
           )),
@@ -285,7 +286,7 @@ class _FormAddItemScreenState extends State<FormAddItem> {
               selectedStatus = selectedStatusType;
             });
           },
-          value: selectedStatus,
+          value: isEditing ? widget.item.status : selectedStatus,
           isExpanded: false,
           hint: Text(
           'Choose Status',
