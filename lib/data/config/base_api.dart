@@ -1,10 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_version/bloc/auth/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'base_dio/barrel_dio.dart';
 import 'constant.dart';
 
@@ -13,11 +8,9 @@ class BaseApi{
   ResponseInterceptor _responseInterceptor = ResponseInterceptor();
   ErrorInterceptor _errorInterceptor = ErrorInterceptor();
   
-  BuildContext context;
   
   Dio dio;
   BaseApi(){
-    this.context;
     
     dio = Dio();
     dio.options.baseUrl = BaseUrl;

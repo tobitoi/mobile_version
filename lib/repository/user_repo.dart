@@ -60,4 +60,8 @@ class UserRepo {
   Future<User> getuser(){
     return _userApi.userDetail();
   }
+
+  Future<List<MenuChildren>> getMenusRepos() {
+    return _userApi.getMenu();
+  }
 }

@@ -5,4 +5,5 @@ const String userUrl = "/auth/info";
 const String visitsUrl = "/api/visits";
 const String itemUrl = "/api/item";
 const String categoryUrl = "/api/category";
+const String menuUrl = "/api/menus/build";
 const double textScaleFactor = 1.0;

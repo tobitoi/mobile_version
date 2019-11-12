@@ -13,59 +13,78 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: SafeArea(   
         // color: Colors.grey[50],
-        child: ListView(
-          children: <Widget>[
-            BlocBuilder<AuthenticationBloc, AuthenticationState>(
+        child:  BlocBuilder<AuthenticationBloc, AuthenticationState>(
                 builder: (context,state){
                   if (state is AuthenticationAuthenticated){
-                    return ListTile(
-                      leading: SizedBox(
-                        child: Image.network(state.image),
-                      ),
-                      title: Text(
-                        state.username,
-                        textScaleFactor: textScaleFactor,
-                        maxLines: 1,
-                      ),
-                      subtitle: Text(
-                        state.email,
-                        textScaleFactor: textScaleFactor,
-                        maxLines: 1,
-                      ),
-                    );
-                    
-                  }
+                    return ListView(                     
+                      children: <Widget>[
+                        DrawerHeader(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Colors.blue,
+                                Colors.blueAccent
+                              ]
+                            ),
+                          ),
+                          child: Container(
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  width: 100,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: new NetworkImage(state.image)
+                                    )
+                                    )
+                                  ),
+                                
+                                Text(state.username,textScaleFactor: textScaleFactor, maxLines: 1),
+                                Text(state.email,textScaleFactor: textScaleFactor, maxLines: 1),                     
+                              ],
+                            ),
+                          ),
+                        ),
+                        _createDrawerItem(
+                          icon: Icons.collections_bookmark, 
+                          text: "Item", 
+                          onTap: () => Navigator.of(context).popAndPushNamed( ArchSampleRoutes.item)
+                        ),
+                        Divider(),
+                        _createDrawerItem(
+                          icon: Icons.arrow_back,
+                          text: "Logout",
+                          onTap: () =>
+                            SchedulerBinding.instance.addPostFrameCallback((_) {
+                              Navigator.of(context).popAndPushNamed("/");
+                              authenticationBloc.add(LoggedOut());
+                            }
+                          )
+                        )
+                      ],
+                    );                                      
+                  }                 
                   return Center(child: CircularProgressIndicator());
                 }
-            ),
-            
-            Divider(),
-             ListTile(
-              leading: Icon(Icons.collections_bookmark),
-              title: Text(
-                'Item',
-                textScaleFactor: textScaleFactor,
-              ),
-              onTap: () {
-                Navigator.of(context).popAndPushNamed( ArchSampleRoutes.item);
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.arrow_back),
-              title: Text(
-                'Logout',
-                textScaleFactor: textScaleFactor,
-              ),
-              onTap: () => 
-               SchedulerBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).popAndPushNamed("/");
-                authenticationBloc.add(LoggedOut());
-              })
-            ),
+            ),   
+      )
+    );
+  }
+  Widget _createDrawerItem(
+    {IconData icon, String text, GestureTapCallback onTap}) {
+      return ListTile(
+        title: Row(
+          children: <Widget>[
+            Icon(icon),
+            Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Text(text),
+            )
           ],
         ),
-      ),
+      onTap: onTap,
     );
   }
 }
