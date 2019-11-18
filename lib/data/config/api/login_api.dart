@@ -9,7 +9,7 @@ class LoginApi {
       BaseOptions(
         connectTimeout: 5000,
         receiveTimeout: 5000,
-        baseUrl: BaseUrl
+        baseUrl: BaseUrl     
       )
     );
   }
@@ -19,9 +19,11 @@ class LoginApi {
     final response = await createDio().post(loginUrl,data: {"username": username, "password": password});
     if (response.statusCode == 200){
       return LoginResponse.fromJson(response.data);
-    }else{
-      print(response.statusMessage);
-     throw response.statusMessage;
     }
+    print("masuk");
+      var error = response.data is Map;
+      print("erros $error");
+     throw response.data;
+    
   }
 }

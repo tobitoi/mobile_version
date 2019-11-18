@@ -14,4 +14,13 @@ class Dashboard {
       throw response.statusMessage;
     }
   }
+
+   Future <bool> addVisit() async {
+    final response = await _baseApi.dio.post(visitsUrl);
+    if (response.statusCode == 201){
+      return true;
+    }else{
+     throw response.statusMessage;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:mobile_version/data/class/class.dart';
 import 'package:mobile_version/repository/repo.dart';
 
 import 'auth.dart';
@@ -20,10 +21,12 @@ class AuthenticationBloc
   ) async* {
     if (event is AppStarted) {
       final bool hasToken = await userRepo.hasToken();
+     
       
       if (hasToken) {
-         final data = await userRepo.getuser();
-        yield AuthenticationAuthenticated(data.username, data.email, data.avatar);
+        final menu  = await userRepo.getMenusRepos();
+        final data = await userRepo.getuser();
+        yield AuthenticationAuthenticated(data.username, data.email, data.avatar,menu, data.roles);
       } else {
         yield AuthenticationUnauthenticated();
       }
@@ -33,7 +36,8 @@ class AuthenticationBloc
       yield AuthenticationLoading();
       await userRepo.persistToken(event.token);
       final data = await userRepo.getuser();
-      yield AuthenticationAuthenticated(data.username, data.email, data.avatar);
+      final menu  = await userRepo.getMenusRepos();
+      yield AuthenticationAuthenticated(data.username, data.email, data.avatar, menu,data.roles);
     }
 
     if (event is LoggedOut) {

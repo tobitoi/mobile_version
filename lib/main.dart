@@ -8,7 +8,6 @@ import 'package:mobile_version/repository/repo.dart';
 import 'package:mobile_version/ui/login/loginBarrel.dart';
 import 'package:mobile_version/utils/arch_sample_routes.dart';
 
-
 import 'bloc/item/item.dart';
 import 'common/common.dart';
 import 'ui/home/home.dart';
@@ -37,7 +36,7 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 void main() {
-   final userRepository = UserRepo();
+  final userRepository = UserRepo();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   runApp(App(userRepository: userRepository));
 }
@@ -47,7 +46,7 @@ class App extends StatelessWidget {
 
   App({Key key, @required this.userRepository}) : super(key: key);
 
- @override
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
@@ -73,7 +72,14 @@ class App extends StatelessWidget {
                   return MultiBlocProvider(
                     providers: [
                       BlocProvider<HomeBloc>(
-                        builder: (context) => HomeBloc(visitRepo: VisitRepo())..add(Fetch()),
+                        builder: (context) =>
+                            HomeBloc(visitRepo: VisitRepo())..add(AddVisit()),
+                      ),
+                      BlocProvider<HomeBloc>(
+                        builder: (context) {
+                          return HomeBloc(visitRepo: VisitRepo())
+                            ..add(Fetch());
+                        },
                       ),
                     ],
                     child: HomePage(),
@@ -89,18 +95,15 @@ class App extends StatelessWidget {
               },
             );
           },
-          ArchSampleRoutes.item : (context) {
+          ArchSampleRoutes.item: (context) {
             return BlocProvider<ItemBloc>(
-              builder: ( context) => ItemBloc(itemCategoryRepos: ItemCategoryRepos())..add(ItemLoad()),
-              child: ItemPage()
-            );
+                builder: (context) =>
+                    ItemBloc(itemCategoryRepos: ItemCategoryRepos())
+                      ..add(ItemLoad()),
+                child: ItemPage());
           }
         },
       ),
     );
   }
 }
-
-
-
- 

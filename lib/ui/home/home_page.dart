@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mobile_version/bloc/auth/auth.dart';
 import 'package:mobile_version/bloc/home/hometobloc.dart';
 
 import 'package:mobile_version/ui/widgets/widgets.dart';
@@ -28,6 +27,7 @@ class HomePage extends StatelessWidget {
           child: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
                 if(state is HomeLoaded){
+                  
                   return StaggeredGridView.count(
                   crossAxisCount: 2,
                   crossAxisSpacing: 12.0,

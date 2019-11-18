@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_version/bloc/auth/auth.dart';
 import 'package:mobile_version/bloc/item/item.dart';
 import 'package:mobile_version/data/class/class.dart';
-import 'package:provider/provider.dart';
 import 'package:mobile_version/ui/widgets/widgets.dart';
 import 'package:mobile_version/utils/utils.dart';
 import 'item_list.dart';

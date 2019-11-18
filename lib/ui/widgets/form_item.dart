@@ -43,8 +43,7 @@ class _FormAddItemScreenState extends State<FormAddItem> {
   String _isFieldIpValid;
   String _isFieldLocationValid;
   String _isFieldDescValid;
-  Category _category;
-  String _status;
+
   var selectedCategory,selectedStatus,datetime;
     final format = DateFormat("yyyy-MM-dd HH:mm:ss.000");
 
@@ -215,7 +214,7 @@ class _FormAddItemScreenState extends State<FormAddItem> {
   }
 
   Widget _buildDropdownCategory( CategoryResponse categoryResponse)  {
-    final localizations = ArchSampleLocalizations.of(context);
+
     var catContent = categoryResponse.contentCategory;
     return Container(
       padding: EdgeInsets.all(10.0),
