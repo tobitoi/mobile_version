@@ -8,19 +8,19 @@ class Dashboard {
 
   Future<Visit> visit() async {
     final response = await _baseApi.dio.get(visitsUrl);
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       return Visit.fromJson(response.data);
-    }else{
+    } else {
       throw response.statusMessage;
     }
   }
 
-   Future <bool> addVisit() async {
+  Future<bool> addVisit() async {
     final response = await _baseApi.dio.post(visitsUrl);
-    if (response.statusCode == 201){
+    if (response.statusCode == 201) {
       return true;
-    }else{
-     throw response.statusMessage;
+    } else {
+      throw response.statusMessage;
     }
   }
 }
