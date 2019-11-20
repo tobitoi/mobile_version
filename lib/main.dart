@@ -77,8 +77,7 @@ class App extends StatelessWidget {
                       ),
                       BlocProvider<HomeBloc>(
                         builder: (context) {
-                          return HomeBloc(visitRepo: VisitRepo())
-                            ..add(Fetch());
+                          return HomeBloc(visitRepo: VisitRepo())..add(Fetch());
                         },
                       ),
                     ],

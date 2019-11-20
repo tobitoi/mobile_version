@@ -7,22 +7,22 @@ import '../config.dart';
 class UserApi {
   BaseApi _baseApi = BaseApi();
   BuildContext context;
- 
+
   Future<User> userDetail() async {
     final response = await _baseApi.dio.get(userUrl);
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       return User.fromJson(response.data);
-    }else{
+    } else {
       throw response.statusMessage;
     }
   }
 
-  Future <List<Menu>> getMenu() async{
+  Future<List<Menu>> getMenu() async {
     final response = await _baseApi.dio.get(menuUrl);
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       List responseJson = response.data;
       return responseJson.map((m) => new Menu.fromJson(m)).toList();
-    }else{
+    } else {
       throw response.statusMessage;
     }
   }

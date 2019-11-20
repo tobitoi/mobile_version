@@ -6,7 +6,6 @@ import 'package:mobile_version/data/response/response..dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepo {
-
   LoginApi _loginApi = LoginApi();
 
   LoginResponse _token;
@@ -15,15 +14,13 @@ class UserRepo {
     @required String username,
     @required String password,
   }) async {
-
     var data = _loginApi.login(username, password);
     await Future.delayed(Duration(seconds: 1));
     _token = await data;
-    if (_token.token != null){
+    if (_token.token != null) {
       SharedPreferences.getInstance().then((prefs) {
-        var _cacheToken =  _token.token;
-        prefs.setString("Authorization",  _cacheToken);
-       
+        var _cacheToken = _token.token;
+        prefs.setString("Authorization", _cacheToken);
       });
     }
     return _token.token;
@@ -41,7 +38,7 @@ class UserRepo {
   Future<void> persistToken(String token) async {
     /// write to keystore/keychain
     await Future.delayed(Duration(seconds: 1));
-    
+
     return;
   }
 
@@ -50,18 +47,18 @@ class UserRepo {
     await Future.delayed(Duration(seconds: 1));
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String getToken = preferences.getString("Authorization");
-    if (getToken != null ){
+    if (getToken != null) {
       return true;
-    }else{
-     return false;
+    } else {
+      return false;
     }
   }
 
-  Future<User> getuser(){
+  Future<User> getuser() {
     return _userApi.userDetail();
   }
 
-  Future <List<Menu>> getMenusRepos() {
+  Future<List<Menu>> getMenusRepos() {
     return _userApi.getMenu();
   }
 }

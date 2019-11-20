@@ -11,7 +11,7 @@ class Dashboard {
     if (response.statusCode == 200) {
       return Visit.fromJson(response.data);
     } else {
-      throw response.statusMessage;
+      throw response.data;
     }
   }
 
@@ -20,7 +20,7 @@ class Dashboard {
     if (response.statusCode == 201) {
       return true;
     } else {
-      throw response.statusMessage;
+      throw response.data;
     }
   }
 }

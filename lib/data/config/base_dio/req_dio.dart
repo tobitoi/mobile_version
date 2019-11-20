@@ -5,7 +5,8 @@ import 'package:dio/dio.dart';
 import 'log_dio.dart';
 
 class RequestInterceptor {
-  LoggingInterceptor _loggingInterceptor = LoggingInterceptor() ;
+  LoggingInterceptor _loggingInterceptor = LoggingInterceptor();
+
   /// Generates the Request Interceptor
   ///
   /// [requestOptions] request options

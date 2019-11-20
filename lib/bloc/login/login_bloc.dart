@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mobile_version/bloc/auth/auth.dart';
@@ -28,7 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         final token = await userRepository.authenticate(
           username: event.username,
           password: event.password,
-        );      
+        );
         authenticationBloc.add(LoggedIn(token: token));
         yield LoginInitial();
       } catch (error) {

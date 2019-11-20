@@ -1,12 +1,10 @@
-class Visit{
+class Visit {
   int newVisits;
   int newIp;
   int recentVisits;
   int recentIp;
 
-
- Visit(
-      {this.newVisits, this.newIp, this.recentVisits, this.recentIp});
+  Visit({this.newVisits, this.newIp, this.recentVisits, this.recentIp});
 
   Visit.fromJson(Map<String, dynamic> json) {
     newVisits = json['newVisits'];

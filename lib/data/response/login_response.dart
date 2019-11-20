@@ -1,4 +1,3 @@
-
 import 'package:mobile_version/data/class/class.dart';
 
 class LoginResponse {
@@ -10,7 +9,6 @@ class LoginResponse {
   LoginResponse.fromJson(Map<String, dynamic> json) {
     token = json['token'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
-   
   }
 
   Map<String, dynamic> toJson() {

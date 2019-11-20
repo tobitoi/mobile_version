@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show TextInputFormatter;
 import 'package:intl/intl.dart' show DateFormat;
 
-
 class DateTimeField extends FormField<DateTime> {
   DateTimeField({
     @required this.format,

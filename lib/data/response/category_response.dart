@@ -19,8 +19,7 @@ class CategoryResponse {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.contentCategory != null) {
-      data['content'] =
-          this.contentCategory.map((v) => v.toJson()).toList();
+      data['content'] = this.contentCategory.map((v) => v.toJson()).toList();
     }
     data['totalElements'] = this.totalElements;
     return data;

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_version/bloc/login/login.dart';
 
 class LoginForm extends StatefulWidget {
-  
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
@@ -14,7 +13,8 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    var assetsImage = new AssetImage('assets/icons/favicon.png'); //<- Creates an object that fetches an image.
+    var assetsImage = new AssetImage(
+        'assets/icons/favicon.png'); //<- Creates an object that fetches an image.
     var image = new Image(image: assetsImage, fit: BoxFit.cover);
 
     _onLoginButtonPressed() {
@@ -45,39 +45,35 @@ class _LoginFormState extends State<LoginForm> {
               children: <Widget>[
                 SizedBox(
                   height: 230,
-                  child: Container(
-                    padding: EdgeInsets.all(50),
-                    child: image
-                  ),  
+                  child: Container(padding: EdgeInsets.all(50), child: image),
                 ),
                 Form(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
+                    child: Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Column(
                     children: [
                       _userNameField(),
                       _passwordField(),
                       Container(
-                        padding: EdgeInsets.all(10),
-                        child: FlatButton(
-                         
-                          shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0) ),
-                          onPressed:
-                                state is! LoginLoading ? _onLoginButtonPressed : null,
-                          child: Text('Login', style: TextStyle(fontSize: 16)),
-                          color: Colors.blue,
-                        )
-                      ),
+                          padding: EdgeInsets.all(10),
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(10.0)),
+                            onPressed: state is! LoginLoading
+                                ? _onLoginButtonPressed
+                                : null,
+                            child:
+                                Text('Login', style: TextStyle(fontSize: 16)),
+                            color: Colors.blue,
+                          )),
                       Container(
                         child: state is LoginLoading
-                          ? CircularProgressIndicator()
-                          : null,
+                            ? CircularProgressIndicator()
+                            : null,
                       )
                     ],
                   ),
-                  ) 
-                )
+                ))
               ],
             ),
           );
@@ -86,23 +82,21 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  Widget _userNameField(){
+  Widget _userNameField() {
     return Container(
       padding: EdgeInsets.all(10),
       child: TextField(
         controller: _usernameController,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          labelText: 'username',
-          border: OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(20.0)
-                  ) 
-        ),
+            labelText: 'username',
+            border: OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(20.0))),
       ),
     );
   }
 
-  Widget _passwordField(){
+  Widget _passwordField() {
     return Container(
       padding: EdgeInsets.all(10),
       child: TextField(
@@ -110,11 +104,9 @@ class _LoginFormState extends State<LoginForm> {
         keyboardType: TextInputType.text,
         obscureText: true,
         decoration: InputDecoration(
-          labelText: 'password',
-          border: OutlineInputBorder(
-                  borderRadius: new BorderRadius.circular(20.0)
-                  ) 
-        ),
+            labelText: 'password',
+            border: OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(20.0))),
       ),
     );
   }

@@ -67,7 +67,7 @@ class ArchSampleLocalizations {
         name: 'newSerialNumberHint',
         args: [],
         locale: locale.toString(),
-      );    
+      );
   String get newIpAddressHint => Intl.message(
         'Ip Address',
         name: 'newIpAddressHint',
@@ -103,7 +103,7 @@ class ArchSampleLocalizations {
         name: 'newDescHint',
         args: [],
         locale: locale.toString(),
-      );        
+      );
 
   String get markAllComplete => Intl.message(
         'Mark all complete',
@@ -216,7 +216,7 @@ class ArchSampleLocalizations {
         name: 'emptDescError',
         args: [],
         locale: locale.toString(),
-      );      
+      );
   String get notesHint => Intl.message(
         'Additional Notes...',
         name: 'notesHint',

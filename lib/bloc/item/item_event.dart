@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:mobile_version/data/class/class.dart';
 
 abstract class ItemEvent extends Equatable {
-  const ItemEvent() ;
+  const ItemEvent();
   @override
   List<Object> get props => [];
 }
@@ -19,7 +19,6 @@ class Delete extends ItemEvent {
 
   @override
   List<Object> get props => [id];
-
 }
 
 class Deleted extends ItemEvent {
@@ -29,7 +28,6 @@ class Deleted extends ItemEvent {
 
   @override
   List<Object> get props => [id];
-
 }
 
 class AddItem extends ItemEvent {
@@ -60,7 +58,7 @@ class SearchItem extends ItemEvent {
   final String itemName;
 
   const SearchItem({@required this.itemName}) : assert(itemName != null);
-  
+
   @override
   List<Object> get props => [itemName];
 }

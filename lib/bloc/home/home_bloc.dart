@@ -15,9 +15,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
-    if (event is Fetch){
+    if (event is Fetch) {
       yield* _mapLoadHomeToState();
-    }else if (event is AddVisit){
+    } else if (event is AddVisit) {
       yield* _mapAddVisitToState();
     }
   }
@@ -34,9 +34,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> _mapAddVisitToState() async* {
     try {
       await this.visitRepo.addVisitRepo();
-    }catch (error){
+    } catch (error) {
       yield HomeNotLoaded(error: error.toString());
-    }  
+    }
   }
-  
 }

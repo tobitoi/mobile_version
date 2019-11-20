@@ -2,10 +2,9 @@ import 'package:mobile_version/data/response/response..dart';
 import 'package:mobile_version/repository/item_category_repo.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CategoryBloc{
- 
- final ItemCategoryRepos _repositoryCategory = ItemCategoryRepos();
- final BehaviorSubject<CategoryResponse> _subjectCategory =
+class CategoryBloc {
+  final ItemCategoryRepos _repositoryCategory = ItemCategoryRepos();
+  final BehaviorSubject<CategoryResponse> _subjectCategory =
       BehaviorSubject<CategoryResponse>();
 
   category() async {
@@ -16,7 +15,8 @@ class CategoryBloc{
   dispose() {
     _subjectCategory.close();
   }
- BehaviorSubject<CategoryResponse> get subjectCategory => _subjectCategory;
 
+  BehaviorSubject<CategoryResponse> get subjectCategory => _subjectCategory;
 }
+
 final categoryBloc = CategoryBloc();

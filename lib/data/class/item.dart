@@ -1,6 +1,6 @@
 import 'category.dart';
 
-class Item{
+class Item {
   int id;
   String itemName;
   String ipAddress;
@@ -30,7 +30,7 @@ class Item{
       this.category,
       this.categoryName,
       this.label,
-      this.isDeleting = false});// add manually not get from response
+      this.isDeleting = false}); // add manually not get from response
 
   Item.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -48,10 +48,9 @@ class Item{
         : null;
     categoryName = json['categoryName'];
     label = json['label'];
-    isDeleting = false;// add manually not get from response
+    isDeleting = false; // add manually not get from response
   }
 
- 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
@@ -72,7 +71,7 @@ class Item{
     return data;
   }
 
-    Item copyWith({
+  Item copyWith({
     String id,
     String itemName,
     String ipAddress,
@@ -87,24 +86,25 @@ class Item{
     Category category,
     String categoryName,
     String label,
-    bool isDeleting,// add manually not get from response
+    bool isDeleting, // add manually not get from response
   }) {
     return Item(
-      id: id ?? this.id,
-      itemName: itemName ?? this.itemName,
-      ipAddress: ipAddress ?? this.ipAddress,
-      location: location ?? this.location,
-      status: status ?? this.status,
-      serialNumber: serialNumber ?? this.serialNumber,
-      description: description ?? this.description,
-      dateCreation: dateCreation ?? this.dateCreation,
-      reachable: reachable ?? this.reachable,
-      createTime: createTime ?? this.createTime,
-      category: category ?? this.category,
-      categoryName: categoryName ?? this.categoryName,
-      label: label ?? this.label,
-      isDeleting: isDeleting ?? this.isDeleting// add manually not get from response
+        id: id ?? this.id,
+        itemName: itemName ?? this.itemName,
+        ipAddress: ipAddress ?? this.ipAddress,
+        location: location ?? this.location,
+        status: status ?? this.status,
+        serialNumber: serialNumber ?? this.serialNumber,
+        description: description ?? this.description,
+        dateCreation: dateCreation ?? this.dateCreation,
+        reachable: reachable ?? this.reachable,
+        createTime: createTime ?? this.createTime,
+        category: category ?? this.category,
+        categoryName: categoryName ?? this.categoryName,
+        label: label ?? this.label,
+        isDeleting:
+            isDeleting ?? this.isDeleting // add manually not get from response
 
-    );
+        );
   }
 }
