@@ -15,6 +15,14 @@ class HomePage extends StatelessWidget {
         drawer: AppDrawer(),
         body: BlocListener<HomeBloc, HomeState>(
           listener: (context, state) {
+            if (state is LoginSuccess) {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Sign in as ${state.username}', textAlign: TextAlign.center),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            }
             if (state is HomeNotLoaded) {
               Scaffold.of(context).showSnackBar(
                 SnackBar(

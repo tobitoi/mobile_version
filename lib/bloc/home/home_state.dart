@@ -37,3 +37,14 @@ class HomeNotLoaded extends HomeState {
   @override
   String toString() => 'HomeNotLoaded { error: $error }';
 }
+
+class LoginSuccess extends HomeState{
+  final String username;
+
+  const LoginSuccess({@required this.username});
+  @override
+  List<Object> get props => [username];
+
+  @override
+  String toString() => 'LoginSuccess { username: $username }';
+}

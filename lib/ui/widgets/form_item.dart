@@ -14,7 +14,8 @@ typedef OnSaveCallback = Function(
     Category category,
     String location,
     String date,
-    String desc);
+    String desc,
+    String isReachable);
 
 class FormAddItem extends StatefulWidget {
   final bool isEditing;
@@ -42,9 +43,12 @@ class _FormAddItemScreenState extends State<FormAddItem> {
   String _isFieldIpValid;
   String _isFieldLocationValid;
   String _isFieldDescValid;
+ 
 
   var selectedCategory, selectedStatus, datetime;
   final format = DateFormat("yyyy-MM-dd HH:mm:ss.000");
+
+  String get isReachable => 'negative';
 
   @override
   void initState() {
@@ -98,7 +102,8 @@ class _FormAddItemScreenState extends State<FormAddItem> {
                 selectedCategory,
                 _isFieldLocationValid,
                 datetime.toString(),
-                _isFieldDescValid);
+                _isFieldDescValid,
+                isReachable);
             Navigator.pop(context);
           }
         },

@@ -51,7 +51,47 @@ class _ItemScreenState extends State<ItemPage> {
     final AuthenticationBloc authenticationBloc =
         BlocProvider.of<AuthenticationBloc>(context);
     controller.addListener(onScroll);
-    return BlocListener<ItemBloc, ItemState>(
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 2.0,
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: "Cari Item",
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                style: TextStyle(color: Colors.white),
+                onChanged: onSearch,
+              )
+            : Text('Item', style: TextStyle(color: Colors.white)),
+        actions: <Widget>[
+          _isSearching
+              ? IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = false;
+                      _searchController.text = "";
+                      onSearch("");
+                    });
+                  })
+              : IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                    });
+                  }),
+        ],
+      ),
+      drawer: AppDrawer(),
+      body: BlocListener<ItemBloc, ItemState>(
         listener: (context, state) {
           if (state is ItemError) {
             Scaffold.of(context).showSnackBar(
@@ -61,99 +101,69 @@ class _ItemScreenState extends State<ItemPage> {
               ),
             );
           }
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            elevation: 2.0,
-            title: _isSearching
-                ? TextField(
-                    controller: _searchController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: "Cari Item",
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                      hintStyle: TextStyle(color: Colors.white),
-                    ),
-                    style: TextStyle(color: Colors.white),
-                    onChanged: onSearch,
-                  )
-                : Text('Item', style: TextStyle(color: Colors.white)),
-            actions: <Widget>[
-              _isSearching
-                  ? IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        setState(() {
-                          _isSearching = false;
-                          _searchController.text = "";
-                          onSearch("");
-                        });
-                      })
-                  : IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        setState(() {
-                          _isSearching = true;
-                        });
-                      }),
-            ],
-          ),
-          drawer: AppDrawer(),
-          body: BlocBuilder<ItemBloc, ItemState>(builder: (context, state) {
-            if (state is ItemLoaded) {
-              if (state.items.isEmpty) {
-                return Center(
-                  child: Text('No Items'),
-                );
-              }
-              ItemLoaded itemloaded = state;
-              return ListView.builder(
-                  itemCount: (itemloaded.hasReachedMax)
-                      ? itemloaded.items.length
-                      : itemloaded.items.length + 1,
-                  itemBuilder: (context, index) =>
-                      (index < itemloaded.items.length)
-                          ? ItemListPage(
-                              items: state.items[index],
-                              onDeletePressed: (id) =>
-                                  BlocProvider.of<ItemBloc>(context)
-                                      .add(Delete(id: id)))
-                          : _bottomLoader(context),
-                  controller: controller);
-            }
-            return Center(
-              child: CircularProgressIndicator(),
+          if (state is Success) {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Success'),
+                backgroundColor: Colors.green,
+              ),
             );
-          }),
-          floatingActionButton: FloatingActionButton(
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return FormAddItem(
-                      key: ArchSampleKeys.addItemScreen,
-                      onSave: (itemName, serialNumber, ip, status, category,
-                          location, date, desc) {
-                        bloc.add(
-                          AddItem(Item(
-                              itemName: itemName,
-                              serialNumber: serialNumber,
-                              ipAddress: ip,
-                              status: status,
-                              category: category,
-                              location: location,
-                              dateCreation: date,
-                              description: desc)),
-                        );
-                      },
-                      isEditing: false,
+          }
+        },
+        child: BlocBuilder<ItemBloc, ItemState>(builder: (context, state) {
+          if (state is ItemLoaded) {
+            if (state.items.isEmpty) {
+              return Center(
+                child: Text('No Items'),
+              );
+            }
+            ItemLoaded itemloaded = state;
+            return ListView.builder(
+                itemCount: (itemloaded.hasReachedMax)
+                    ? itemloaded.items.length
+                    : itemloaded.items.length + 1,
+                itemBuilder: (context, index) =>
+                    (index < itemloaded.items.length)
+                        ? ItemListPage(
+                            items: state.items[index],
+                            onDeletePressed: (id) =>
+                                BlocProvider.of<ItemBloc>(context)
+                                    .add(Delete(id: id)))
+                        : _bottomLoader(context),
+                controller: controller);
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }),
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () =>
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return FormAddItem(
+                  key: ArchSampleKeys.addItemScreen,
+                  onSave: (itemName, serialNumber, ip, status, category,
+                      location, date, desc, reachable) {
+                    bloc.add(
+                      AddItem(Item(
+                          itemName: itemName,
+                          serialNumber: serialNumber,
+                          ipAddress: ip,
+                          status: status,
+                          category: category,
+                          location: location,
+                          dateCreation: date,
+                          description: desc,
+                          reachable: reachable)),
                     );
-                  })),
-              tooltip: 'Increment Counter',
-              child: Icon(Icons.add)),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        ));
+                  },
+                  isEditing: false,
+                );
+              })),
+          tooltip: 'Increment Counter',
+          child: Icon(Icons.add)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 
   Widget _bottomLoader(BuildContext context) {

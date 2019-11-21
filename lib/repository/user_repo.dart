@@ -17,10 +17,12 @@ class UserRepo {
     var data = _loginApi.login(username, password);
     await Future.delayed(Duration(seconds: 1));
     _token = await data;
-    if (_token.token != null) {
+    if (_token.token != null && _token.user.username !=null) {
       SharedPreferences.getInstance().then((prefs) {
         var _cacheToken = _token.token;
+        var _username = _token.user.username;
         prefs.setString("Authorization", _cacheToken);
+        prefs.setString("username", _username);
       });
     }
     return _token.token;

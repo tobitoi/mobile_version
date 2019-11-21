@@ -56,7 +56,8 @@ class ItemListPage extends StatelessWidget {
                                             category,
                                             location,
                                             date,
-                                            desc) {
+                                            desc,
+                                            reachable) {
                                           BlocProvider.of<ItemBloc>(context)
                                               .add(
                                             UpdateItem(
@@ -68,7 +69,8 @@ class ItemListPage extends StatelessWidget {
                                                   category: category,
                                                   location: location,
                                                   dateCreation: date,
-                                                  description: desc),
+                                                  description: desc,
+                                                  reachable: reachable),
                                             ),
                                           );
                                         },

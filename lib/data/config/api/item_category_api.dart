@@ -28,6 +28,15 @@ class ItemCategoryApi {
     }
   }
 
+  Future<void> getItemReachable() async {
+    final response = await _baseApi.dio.get(itemReachableUrl);
+    if (response.statusCode == 200) {
+      return ItemResponse.fromJson(response.data).content;
+    } else {
+      throw response.statusMessage;
+    }
+  }
+
   Future<bool> updateItem(Item itemRequest) async {
     final response = await _baseApi.dio.put(
       itemUrl,

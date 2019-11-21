@@ -4,6 +4,7 @@ const String loginUrl = "/auth/login1";
 const String userUrl = "/auth/info";
 const String visitsUrl = "/api/visits";
 const String itemUrl = "/api/item";
+const String itemReachableUrl = "/api/item/reachable";
 const String categoryUrl = "/api/category";
 const String menuUrl = "/api/menus/build";
 const double textScaleFactor = 1.0;

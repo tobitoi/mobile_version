@@ -28,4 +28,8 @@ class ItemCategoryRepos {
   Future<List<Item>> searhItemRepos(String name) {
     return _itemCategoryApi.getItembyName(name);
   }
+
+  Future<void> getItemReachableRepo() {
+    return _itemCategoryApi.getItemReachable();
+  }
 }

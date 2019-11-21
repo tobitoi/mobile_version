@@ -33,6 +33,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
   Stream<ItemState> mapEventToState(ItemEvent event) async* {
     final currentState = state;
     if (event is ItemLoad && !_hasReachedMax(currentState)) {
+      //await itemCategoryRepos.getItemReachableRepo();
       try {
         if (state is ItemUninitialized) {
           final contents = await itemCategoryRepos.getItemRepo(0, 20);
@@ -46,14 +47,18 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
               : ItemLoaded(
                   items: itemLoaded.items + contents, hasReachedMax: false);
         }
-      } catch (_) {
-        yield ItemError();
+      } catch (error) {
+        yield ItemError(error: error.toString());
       }
     }
     if (event is SearchItem) {
-      final items = await itemCategoryRepos.searhItemRepos(event.itemName);
-      yield ItemLoaded(
-          items: items, hasReachedMax: items.length < 20 ? true : false);
+      try {
+        final items = await itemCategoryRepos.searhItemRepos(event.itemName);
+        yield ItemLoaded(
+            items: items, hasReachedMax: items.length < 20 ? true : false);
+      } catch (error) {
+        ItemError(error: error.toString());
+      }
     }
     if (event is ClearItem) {
       try {
@@ -63,55 +68,73 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
         yield ItemLoaded(
             items: contents,
             hasReachedMax: contents.length < nextPage ? true : false);
-      } catch (_) {
-        yield ItemError();
+      } catch (error) {
+        yield ItemError(error: error.toString());
       }
     }
     if (event is Delete) {
       final itemState = state;
-      if (itemState is ItemLoaded) {
-        List<Item> updateContents =
-            List<Item>.from(itemState.items).map((Item content) {
-          return content.id == event.id
-              ? content.copyWith(isDeleting: true)
-              : content;
-        }).toList();
-        yield ItemLoaded(
-            items: updateContents,
-            hasReachedMax: updateContents.length < 20 ? true : false);
-        itemCategoryRepos.deleteItemRepos(event.id).listen((id) {
-          add(Deleted(id: id));
-        });
+      try {
+        if (itemState is ItemLoaded) {
+          List<Item> updateContents =
+              List<Item>.from(itemState.items).map((Item content) {
+            return content.id == event.id
+                ? content.copyWith(isDeleting: true)
+                : content;
+          }).toList();
+          yield ItemLoaded(
+              items: updateContents,
+              hasReachedMax: updateContents.length < 20 ? true : false);
+          itemCategoryRepos.deleteItemRepos(event.id).listen((id) {
+            add(Deleted(id: id));
+          });
+        }
+      } catch (error) {
+        yield ItemError(error: error.toString());
       }
     }
     if (event is Deleted) {
       final itemState = state;
-      if (itemState is ItemLoaded) {
-        final List<Item> updateContents = List<Item>.from(itemState.items)
-          ..removeWhere((item) => item.id == event.id);
-        yield ItemLoaded(
-            items: updateContents,
-            hasReachedMax: updateContents.length < 20 ? true : false);
+      try {
+        if (itemState is ItemLoaded) {
+          final List<Item> updateContents = List<Item>.from(itemState.items)
+            ..removeWhere((item) => item.id == event.id);
+          yield Success();
+          yield ItemLoaded(
+              items: updateContents,
+              hasReachedMax: updateContents.length < 20 ? true : false);
+        }
+      } catch (error) {
+        ItemError(error: error.toString());
       }
     }
     if (event is AddItem) {
       final addItemState = state;
-      if (addItemState is ItemLoaded) {
-        final List<Item> updateContens = List<Item>.from(addItemState.items);
-        yield ItemLoaded(
-            items: updateContens,
-            hasReachedMax: updateContens.length < 20 ? true : false);
-        _saveItem(event.request);
+      try {
+        if (addItemState is ItemLoaded) {
+          final List<Item> updateContens = List<Item>.from(addItemState.items);
+          yield ItemLoaded(
+              items: updateContens,
+              hasReachedMax: updateContens.length < 20 ? true : false);
+          _saveItem(event.request);
+        }
+      } catch (error) {
+        ItemError(error: error.toString());
       }
     }
     if (event is AddItem) {
       final addItemState = state;
-      if (addItemState is ItemLoaded) {
-        final List<Item> updateContens = List<Item>.from(addItemState.items)
-          ..add(event.request);
-        yield ItemLoaded(
-            items: updateContens,
-            hasReachedMax: updateContens.length < 20 ? true : false);
+      try {
+        if (addItemState is ItemLoaded) {
+          final List<Item> updateContens = List<Item>.from(addItemState.items)
+            ..add(event.request);
+          yield Success();
+          yield ItemLoaded(
+              items: updateContens,
+              hasReachedMax: updateContens.length < 20 ? true : false);
+        }
+      } catch (error) {
+        ItemError(error: error.toString());
       }
     }
     if (event is UpdateItem) {
@@ -120,14 +143,19 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
   }
 
   Stream<ItemState> _mapUpdateItemToState(UpdateItem event) async* {
-    if (state is ItemLoaded) {
-      final List<Item> updateditems = (state as ItemLoaded).items.map((item) {
-        return item.id == event.updateItem.id ? event.updateItem : item;
-      }).toList();
-      yield ItemLoaded(
-          items: updateditems,
-          hasReachedMax: updateditems.length < 20 ? true : false);
-      _saveEditItem(event.updateItem);
+    try {
+      if (state is ItemLoaded) {
+        final List<Item> updateditems = (state as ItemLoaded).items.map((item) {
+          return item.id == event.updateItem.id ? event.updateItem : item;
+        }).toList();
+        yield Success();
+        yield ItemLoaded(
+            items: updateditems,
+            hasReachedMax: updateditems.length < 20 ? true : false);
+        _saveEditItem(event.updateItem);
+      }
+    } catch (error) {
+      ItemError(error: error.toString());
     }
   }
 

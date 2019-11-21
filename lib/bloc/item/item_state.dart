@@ -43,3 +43,5 @@ class ItemLoaded extends ItemState {
   String toString() =>
       'ItemLoad { contents: ${items.length}, hasReachedMax: $hasReachedMax }';
 }
+
+class Success extends ItemState{}
