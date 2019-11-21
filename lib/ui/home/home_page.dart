@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mobile_version/bloc/home/hometobloc.dart';
+import 'package:mobile_version/data/response/bongkarmuat_response.dart';
+import 'package:mobile_version/ui/home/chart.dart';
 
 import 'package:mobile_version/ui/widgets/widgets.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+
+import 'SubscribeSeries.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -18,7 +23,8 @@ class HomePage extends StatelessWidget {
             if (state is LoginSuccess) {
               Scaffold.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Sign in as ${state.username}', textAlign: TextAlign.center),
+                  content: Text('Sign in as ${state.username}',
+                      textAlign: TextAlign.center),
                   backgroundColor: Colors.green,
                 ),
               );
@@ -34,6 +40,49 @@ class HomePage extends StatelessWidget {
           },
           child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
             if (state is HomeLoaded) {
+              final List<SubscriberSeries> data = [
+                SubscriberSeries(
+                    status: '02',
+                    data: state.bongkarMuat.status02,
+                    barColor: charts.ColorUtil.fromDartColor(Colors.blue)),
+                SubscriberSeries(
+                    status: '03',
+                    data: state.bongkarMuat.status03,
+                    barColor: charts.ColorUtil.fromDartColor(Colors.orange)),
+                SubscriberSeries(
+                    status: '05',
+                    data: state.bongkarMuat.status05,
+                    barColor: charts.ColorUtil.fromDartColor(Colors.red)),
+                SubscriberSeries(
+                    status: '09',
+                    data: state.bongkarMuat.status09,
+                    barColor:
+                        charts.ColorUtil.fromDartColor(Colors.purpleAccent)),
+                SubscriberSeries(
+                    status: '10',
+                    data: state.bongkarMuat.status10,
+                    barColor:
+                        charts.ColorUtil.fromDartColor(Colors.greenAccent)),
+                SubscriberSeries(
+                    status: '50',
+                    data: state.bongkarMuat.status50,
+                    barColor:
+                        charts.ColorUtil.fromDartColor(Colors.yellowAccent)),
+                SubscriberSeries(
+                    status: '51',
+                    data: state.bongkarMuat.status51,
+                    barColor: charts.ColorUtil.fromDartColor(Colors.cyan)),
+                SubscriberSeries(
+                    status: '55',
+                    data: state.bongkarMuat.status55,
+                    barColor:
+                        charts.ColorUtil.fromDartColor(Colors.green[900])),
+                SubscriberSeries(
+                    status: '56',
+                    data: state.bongkarMuat.status02,
+                    barColor:
+                        charts.ColorUtil.fromDartColor(Colors.yellow[700]))
+              ];
               return StaggeredGridView.count(
                 crossAxisCount: 2,
                 crossAxisSpacing: 12.0,
@@ -43,32 +92,26 @@ class HomePage extends StatelessWidget {
                   _buildTile(
                     Padding(
                       padding: const EdgeInsets.all(24.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text('Weekly Visit',
-                                    style: TextStyle(color: Colors.blueAccent)),
-                                Text(state.visit.recentVisits.toString(),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 34.0))
-                              ],
-                            ),
                             Material(
                                 color: Colors.blue,
-                                borderRadius: BorderRadius.circular(24.0),
-                                child: Center(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                shape: CircleBorder(),
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.0),
                                   child: Icon(Icons.timeline,
                                       color: Colors.white, size: 30.0),
-                                )))
+                                )),
+                            Padding(padding: EdgeInsets.only(bottom: 16.0)),
+                            Text(state.visit.newVisits.toString(),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24.0)),
+                            Text('Weekly Visits ',
+                                style: TextStyle(color: Colors.black45)),
                           ]),
                     ),
                   ),
@@ -88,12 +131,12 @@ class HomePage extends StatelessWidget {
                                       color: Colors.white, size: 30.0),
                                 )),
                             Padding(padding: EdgeInsets.only(bottom: 16.0)),
-                            Text(state.visit.newIp.toString(),
+                            Text(state.visit.recentIp.toString(),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 24.0)),
-                            Text('Daily Ip',
+                            Text('Weekly Ip',
                                 style: TextStyle(color: Colors.black45)),
                           ]),
                     ),
@@ -127,42 +170,45 @@ class HomePage extends StatelessWidget {
                   _buildTile(
                     Padding(
                       padding: const EdgeInsets.all(24.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text('Weekly Ip Count',
-                                    style: TextStyle(color: Colors.blueAccent)),
-                                Text(state.visit.recentIp.toString(),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 34.0))
-                              ],
-                            ),
                             Material(
                                 color: Colors.red,
-                                borderRadius: BorderRadius.circular(24.0),
-                                child: Center(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Icon(Icons.accessibility_new,
+                                shape: CircleBorder(),
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Icon(Icons.visibility,
                                       color: Colors.white, size: 30.0),
-                                )))
+                                )),
+                            Padding(padding: EdgeInsets.only(bottom: 16.0)),
+                            Text(state.visit.newIp.toString(),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24.0)),
+                            Text('Daily Visits ',
+                                style: TextStyle(color: Colors.black45)),
                           ]),
+                    ),
+                  ),
+                  _buildTile(
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[Chart(data: data)]),
                     ),
                   ),
                 ],
                 staggeredTiles: [
-                  StaggeredTile.extent(2, 110.0),
                   StaggeredTile.extent(1, 180.0),
                   StaggeredTile.extent(1, 180.0),
-                  StaggeredTile.extent(2, 220.0),
-                  StaggeredTile.extent(2, 110.0),
+                  StaggeredTile.extent(1, 180.0),
+                  StaggeredTile.extent(1, 180.0),
+                  StaggeredTile.extent(2, 404.0),
                 ],
               );
             }

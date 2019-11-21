@@ -7,4 +7,5 @@ const String itemUrl = "/api/item";
 const String itemReachableUrl = "/api/item/reachable";
 const String categoryUrl = "/api/category";
 const String menuUrl = "/api/menus/build";
+const String bongkarMuatUrl ="/api/chart";
 const double textScaleFactor = 1.0;

@@ -1,5 +1,6 @@
 import 'package:mobile_version/data/class/class.dart';
 import 'package:mobile_version/data/config/base_api.dart';
+import 'package:mobile_version/data/response/response..dart';
 
 import '../constant.dart';
 
@@ -19,6 +20,16 @@ class Dashboard {
     final response = await _baseApi.dio.post(visitsUrl);
     if (response.statusCode == 201) {
       return true;
+    } else {
+      throw response.data;
+    }
+  }
+
+  Future<BongkarMuatResponse> bongkarMuat({String startTime, String endTime}) async {
+    final response = await _baseApi.dio.get(bongkarMuatUrl,
+        queryParameters: {"startDateTime": startTime, "endDateTime": endTime});
+    if (response.statusCode == 200) {
+      return BongkarMuatResponse.fromJson(response.data);
     } else {
       throw response.data;
     }

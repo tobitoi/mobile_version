@@ -76,10 +76,8 @@ class App extends StatelessWidget {
                             HomeBloc(visitRepo: VisitRepo())..add(AddVisit()),
                       ),
                       BlocProvider<HomeBloc>(
-                        builder: (context) {
-                          return HomeBloc(visitRepo: VisitRepo())..add(Fetch());
-                        },
-                      ),
+                          builder: (context) =>
+                              HomeBloc(visitRepo: VisitRepo())..add(Fetch())),
                     ],
                     child: HomePage(),
                   );
