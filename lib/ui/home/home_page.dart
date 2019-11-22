@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile_version/bloc/home/hometobloc.dart';
-import 'package:mobile_version/data/response/bongkarmuat_response.dart';
 import 'package:mobile_version/ui/home/chart.dart';
 
 import 'package:mobile_version/ui/widgets/widgets.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:mobile_version/utils/utils.dart';
 
 import 'SubscribeSeries.dart';
 
 class HomePage extends StatelessWidget {
+  final format1 = DateFormat("yyyyMMddHHmm");
+  final format = DateFormat("yyyy-MM-dd HH:mm:ss.000");
+  var startDateTime, endDateTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +27,7 @@ class HomePage extends StatelessWidget {
             if (state is LoginSuccess) {
               Scaffold.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Sign in as ${state.username}',
-                      textAlign: TextAlign.center),
-                  backgroundColor: Colors.green,
+                  content: Text('Sign in as ${state.username}'),
                 ),
               );
             }
@@ -79,7 +81,7 @@ class HomePage extends StatelessWidget {
                         charts.ColorUtil.fromDartColor(Colors.green[900])),
                 SubscriberSeries(
                     status: '56',
-                    data: state.bongkarMuat.status02,
+                    data: state.bongkarMuat.status56,
                     barColor:
                         charts.ColorUtil.fromDartColor(Colors.yellow[700]))
               ];
@@ -105,7 +107,7 @@ class HomePage extends StatelessWidget {
                                       color: Colors.white, size: 30.0),
                                 )),
                             Padding(padding: EdgeInsets.only(bottom: 16.0)),
-                            Text(state.visit.newVisits.toString(),
+                            Text(state.visit.recentVisits.toString(),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w700,
@@ -199,7 +201,31 @@ class HomePage extends StatelessWidget {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[Chart(data: data)]),
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.only(left: 20, right: 20),
+                              child: Column(
+                                children: <Widget>[
+                                  _buildStartDatePicker(),
+                                  _buildEndDatePicker(),
+                                  FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(10.0)),
+                                      color: Colors.blue,
+                                      child: Text("Filter"),
+                                      onPressed: () =>
+                                          BlocProvider.of<HomeBloc>(context)
+                                              .add(FilterBongkarMuat(
+                                                  startDate:
+                                                      startDateTime.toString(),
+                                                  endDate:
+                                                      endDateTime.toString()))),
+                                ],
+                              ),
+                            ),
+                            Chart(data: data)
+                          ]),
                     ),
                   ),
                 ],
@@ -208,7 +234,7 @@ class HomePage extends StatelessWidget {
                   StaggeredTile.extent(1, 180.0),
                   StaggeredTile.extent(1, 180.0),
                   StaggeredTile.extent(1, 180.0),
-                  StaggeredTile.extent(2, 404.0),
+                  StaggeredTile.extent(2, 610.0),
                 ],
               );
             }
@@ -232,5 +258,81 @@ class HomePage extends StatelessWidget {
                     print('Not set yet');
                   },
             child: child));
+  }
+
+  Widget _buildStartDatePicker() {
+    var stardate;
+    return Container(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 15),
+      child: DateTimeField(
+        format: format,
+        decoration: InputDecoration(
+            hintText: "Please input Startdatetime",
+            border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(20.0))),
+        onShowPicker: (context, currentStardateValue) async {
+          final date = await showDatePicker(
+              context: context,
+              firstDate: DateTime(1900),
+              initialDate: currentStardateValue ?? DateTime.now(),
+              lastDate: DateTime(2100));
+
+          if (date != null) {
+            final time = await showTimePicker(
+              context: context,
+              initialTime: TimeOfDay.fromDateTime(
+                  currentStardateValue ?? DateTime.now()),
+            );
+            stardate = DateTimeField.combine(date, time);
+            startDateTime = format1.format(stardate);
+            print("startDateTime $startDateTime");
+
+            return DateTimeField.combine(date, time);
+          } else {
+            print("current $currentStardateValue");
+            return currentStardateValue;
+          }
+        },
+        onSaved: (valueStardate) => startDateTime = valueStardate,
+      ),
+    );
+  }
+
+  Widget _buildEndDatePicker() {
+    var endDate;
+    return Container(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 15),
+      child: DateTimeField(
+        format: format,
+        decoration: InputDecoration(
+            hintText: "Please input End Date Time",
+            border: new OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(20.0))),
+        onShowPicker: (context, currentValueEndDate) async {
+          final date = await showDatePicker(
+              context: context,
+              firstDate: DateTime(1900),
+              initialDate: currentValueEndDate ?? DateTime.now(),
+              lastDate: DateTime(2100));
+
+          if (date != null) {
+            final time = await showTimePicker(
+              context: context,
+              initialTime:
+                  TimeOfDay.fromDateTime(currentValueEndDate ?? DateTime.now()),
+            );
+            endDate = DateTimeField.combine(date, time);
+
+            endDateTime = format1.format(endDate);
+            print("endDateTime $endDateTime");
+            return DateTimeField.combine(date, time);
+          } else {
+            print("current $currentValueEndDate");
+            return currentValueEndDate;
+          }
+        },
+        onSaved: (valueEndDate) => endDateTime = valueEndDate,
+      ),
+    );
   }
 }

@@ -14,7 +14,7 @@ class VisitRepo {
   }
 
   Future<BongkarMuatResponse> getBongkarMuatRepo(
-      {String startTime = '201911210000', String endTime = '201911212359'}) {
+      {String startTime , String endTime}) {
     return _dashboard.bongkarMuat(startTime: startTime, endTime: endTime);
   }
 

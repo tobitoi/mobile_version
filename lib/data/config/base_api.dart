@@ -1,4 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_version/bloc/auth/auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_dio/barrel_dio.dart';
 import 'constant.dart';
@@ -27,7 +31,13 @@ class BaseApi {
       var errorResponse = e.response.data['message'];
       if (errorResponse != null) {
         if (e.response.statusCode == 401) {
-          return errorResponse;
+          BuildContext context;
+          final AuthenticationBloc authenticationBloc =
+              BlocProvider.of<AuthenticationBloc>(context);
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).popAndPushNamed("/");
+            authenticationBloc.add(LoggedOut());
+          });
         }
         return errorResponse;
       }

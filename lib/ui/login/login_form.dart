@@ -18,12 +18,37 @@ class _LoginFormState extends State<LoginForm> {
     var image = new Image(image: assetsImage, fit: BoxFit.cover);
 
     _onLoginButtonPressed() {
-      BlocProvider.of<LoginBloc>(context).add(
-        LoginButtonPressed(
-          username: _usernameController.text,
-          password: _passwordController.text,
-        ),
-      );
+      if (!(_usernameController.text.length > 3) &&
+          _usernameController.text.isNotEmpty) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Username should contains more then 3 character'),
+                Icon(Icons.error)
+              ],
+            ),
+            backgroundColor: Colors.red));
+      } else if (!(_passwordController.text.length > 6) &&
+          _passwordController.text.isNotEmpty) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Password should contains more then 6 character'),
+              Icon(Icons.error)
+            ],
+          ),
+          backgroundColor: Colors.red,
+        ));
+      } else {
+        BlocProvider.of<LoginBloc>(context).add(
+          LoginButtonPressed(
+            username: _usernameController.text,
+            password: _passwordController.text,
+          ),
+        );
+      }
     }
 
     return BlocListener<LoginBloc, LoginState>(
@@ -31,10 +56,30 @@ class _LoginFormState extends State<LoginForm> {
         if (state is LoginFailure) {
           Scaffold.of(context).showSnackBar(
             SnackBar(
-              content: Text('${state.error.substring(33)}'),
-              backgroundColor: Colors.red,
-            ),
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('${state.error.substring(33)}'),
+                    Icon(Icons.error)
+                  ],
+                ),
+                backgroundColor: Colors.red),
           );
+        }
+        if (state is LoginLoading) {
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Logging In...'),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              ),
+            );
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -66,11 +111,6 @@ class _LoginFormState extends State<LoginForm> {
                                 Text('Login', style: TextStyle(fontSize: 16)),
                             color: Colors.blue,
                           )),
-                      Container(
-                        child: state is LoginLoading
-                            ? CircularProgressIndicator()
-                            : null,
-                      )
                     ],
                   ),
                 ))
@@ -90,6 +130,7 @@ class _LoginFormState extends State<LoginForm> {
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
             labelText: 'username',
+            icon: Icon(Icons.perm_identity),
             border: OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(20.0))),
       ),
@@ -105,6 +146,7 @@ class _LoginFormState extends State<LoginForm> {
         obscureText: true,
         decoration: InputDecoration(
             labelText: 'password',
+            icon: Icon(Icons.lock),
             border: OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(20.0))),
       ),

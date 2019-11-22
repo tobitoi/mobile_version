@@ -20,7 +20,7 @@ class UserRepo {
     if (_token.token != null && _token.user.username !=null) {
       SharedPreferences.getInstance().then((prefs) {
         var _cacheToken = _token.token;
-        var _username = _token.user.username;
+        var _username = _token.user.email;
         prefs.setString("Authorization", _cacheToken);
         prefs.setString("username", _username);
       });

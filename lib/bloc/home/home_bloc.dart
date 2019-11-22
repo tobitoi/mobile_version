@@ -21,10 +21,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       String username = preferences.getString("username");
       yield LoginSuccess(username: username);
-
       yield* _mapLoadHomeToState();
     } else if (event is AddVisit) {
       yield* _mapAddVisitToState();
+    } else if (event is FilterBongkarMuat) {
+      yield* _mapBongkarMuatToState(event);
     }
   }
 
@@ -47,7 +48,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  Stream<HomeState> _mapBongkarMuatToState(Fetch event) async* {
+  Stream<HomeState> _mapBongkarMuatToState(FilterBongkarMuat event) async* {
     try {
       final Visit visitData = await this.visitRepo.getVisitRepo();
       final bongkarmuat = await this
