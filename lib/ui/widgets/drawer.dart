@@ -43,7 +43,7 @@ class AppDrawer extends StatelessWidget {
               ),
               _createDrawerItem(
                   icon: Icons.collections_bookmark,
-                  text: state.menuResponse[3].children[1].name,
+                  text: "Item",
                   onTap: () => Navigator.of(context)
                       .popAndPushNamed(ArchSampleRoutes.item),
                   showList: true),

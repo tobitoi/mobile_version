@@ -32,11 +32,9 @@ class BaseApi {
       if (errorResponse != null) {
         if (e.response.statusCode == 401) {
           BuildContext context;
-          final AuthenticationBloc authenticationBloc =
-              BlocProvider.of<AuthenticationBloc>(context);
           SchedulerBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).popAndPushNamed("/");
-            authenticationBloc.add(LoggedOut());
+            BlocProvider<AuthenticationBloc>(builder: (context) => AuthenticationBloc()..add(LoggedOut()));
           });
         }
         return errorResponse;

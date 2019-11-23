@@ -18,7 +18,14 @@ class _LoginFormState extends State<LoginForm> {
     var image = new Image(image: assetsImage, fit: BoxFit.cover);
 
     _onLoginButtonPressed() {
-      if (!(_usernameController.text.length > 3) &&
+      if (_usernameController.text.isEmpty) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [Text('Username must not be blank'), Icon(Icons.error)],
+            ),
+            backgroundColor: Colors.red));
+      } else if (!(_usernameController.text.length >= 3) &&
           _usernameController.text.isNotEmpty) {
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Row(
@@ -29,7 +36,14 @@ class _LoginFormState extends State<LoginForm> {
               ],
             ),
             backgroundColor: Colors.red));
-      } else if (!(_passwordController.text.length > 6) &&
+      } else if (_passwordController.text.isEmpty) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [Text('Password must not be blank'), Icon(Icons.error)],
+            ),
+            backgroundColor: Colors.red));
+      } else if (!(_passwordController.text.length >= 6) &&
           _passwordController.text.isNotEmpty) {
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Row(
