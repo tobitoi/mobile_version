@@ -13,10 +13,19 @@ import 'SubscribeSeries.dart';
 
 class HomePage extends StatelessWidget {
   final format1 = DateFormat("yyyyMMddHHmm");
-  final format = DateFormat("yyyy-MM-dd HH:mm:ss.000");
-  var startDateTime, endDateTime;
+  final format = DateFormat("yyyy-MM-dd HH:mm:ss");
+  final startDateTimeController = TextEditingController();
+  final endDateTimeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    _onFilterButtonPressed() {
+      DateTime startDate = DateTime.parse(startDateTimeController.text);
+      DateTime endDate = DateTime.parse(endDateTimeController.text);
+      BlocProvider.of<HomeBloc>(context).add(FilterBongkarMuat(
+          startDate: format1.format(startDate).toString(), endDate: format1.format(endDate).toString()));
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Dashboard'),
@@ -190,7 +199,7 @@ class HomePage extends StatelessWidget {
                                     color: Colors.black,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 24.0)),
-                            Text('Daily Visits ',
+                            Text('Daily Ip ',
                                 style: TextStyle(color: Colors.black45)),
                           ]),
                     ),
@@ -214,13 +223,7 @@ class HomePage extends StatelessWidget {
                                               new BorderRadius.circular(10.0)),
                                       color: Colors.blue,
                                       child: Text("Filter"),
-                                      onPressed: () =>
-                                          BlocProvider.of<HomeBloc>(context)
-                                              .add(FilterBongkarMuat(
-                                                  startDate:
-                                                      startDateTime.toString(),
-                                                  endDate:
-                                                      endDateTime.toString()))),
+                                      onPressed: _onFilterButtonPressed),
                                 ],
                               ),
                             ),
@@ -265,6 +268,7 @@ class HomePage extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: 20, right: 20, top: 15),
       child: DateTimeField(
+        controller: startDateTimeController,
         format: format,
         decoration: InputDecoration(
             hintText: "Please input Startdatetime",
@@ -284,8 +288,8 @@ class HomePage extends StatelessWidget {
                   currentStardateValue ?? DateTime.now()),
             );
             stardate = DateTimeField.combine(date, time);
-            startDateTime = format1.format(stardate);
-            print("startDateTime $startDateTime");
+            startDateTimeController.text = format1.format(stardate);
+            print("startDateTime ${startDateTimeController.text}");
 
             return DateTimeField.combine(date, time);
           } else {
@@ -293,7 +297,8 @@ class HomePage extends StatelessWidget {
             return currentStardateValue;
           }
         },
-        onSaved: (valueStardate) => startDateTime = valueStardate,
+        onSaved: (valueStardate) =>
+            startDateTimeController.text = valueStardate.toString(),
       ),
     );
   }
@@ -303,6 +308,7 @@ class HomePage extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: 20, right: 20, top: 15),
       child: DateTimeField(
+        controller: endDateTimeController,
         format: format,
         decoration: InputDecoration(
             hintText: "Please input End Date Time",
@@ -323,15 +329,16 @@ class HomePage extends StatelessWidget {
             );
             endDate = DateTimeField.combine(date, time);
 
-            endDateTime = format1.format(endDate);
-            print("endDateTime $endDateTime");
+            endDateTimeController.text = format1.format(endDate);
+            print("endDateTime ${endDateTimeController.text}");
             return DateTimeField.combine(date, time);
           } else {
             print("current $currentValueEndDate");
             return currentValueEndDate;
           }
         },
-        onSaved: (valueEndDate) => endDateTime = valueEndDate,
+        onSaved: (valueEndDate) =>
+            endDateTimeController.text = valueEndDate.toString(),
       ),
     );
   }
