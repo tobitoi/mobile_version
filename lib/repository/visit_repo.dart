@@ -13,9 +13,8 @@ class VisitRepo {
     return _dashboard.addVisit();
   }
 
-  Future<BongkarMuatResponse> getBongkarMuatRepo(
-      {String startTime , String endTime}) {
-    return _dashboard.bongkarMuat(startTime: startTime, endTime: endTime);
+  Future<BongkarMuatResponse> getBongkarMuatRepo() {
+    return _dashboard.bongkarMuat();
   }
 
   Future<BongkarMuatResponse> getBongkarMuatRepoFilter(
