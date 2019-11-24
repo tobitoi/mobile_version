@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_version/bloc/login/login.dart';
+import 'package:mobile_version/ui/widgets/widgets.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +115,13 @@ class _LoginFormState extends State<LoginForm> {
             child: ListView(
               physics: AlwaysScrollableScrollPhysics(),
               children: <Widget>[
-                SizedBox(
-                  height: 230,
-                  child: Container(padding: EdgeInsets.all(50), child: image),
-                ),
+                FadeAnimation(
+                    1.2,
+                    SizedBox(
+                      height: 230,
+                      child:
+                          Container(padding: EdgeInsets.all(50), child: image),
+                    )),
                 Form(
                     child: Padding(
                   padding: EdgeInsets.all(10.0),
@@ -124,18 +129,21 @@ class _LoginFormState extends State<LoginForm> {
                     children: [
                       _userNameField(),
                       _passwordField(),
-                      Container(
-                          padding: EdgeInsets.all(10),
-                          child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0)),
-                            onPressed: state is! LoginLoading
-                                ? _onLoginButtonPressed
-                                : null,
-                            child:
-                                Text('Login', style: TextStyle(fontSize: 16)),
-                            color: Colors.blue,
-                          )),
+                      FadeAnimation(
+                          1.8,
+                          Container(
+                              padding: EdgeInsets.all(10),
+                              child: FlatButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0)),
+                                onPressed: state is! LoginLoading
+                                    ? _onLoginButtonPressed
+                                    : null,
+                                child: Text('Login',
+                                    style: TextStyle(fontSize: 16)),
+                                color: Colors.blue,
+                              ))),
                     ],
                   ),
                 ))
@@ -148,33 +156,48 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   Widget _userNameField() {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: TextField(
-        controller: _usernameController,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-            labelText: 'username',
-            icon: Icon(Icons.perm_identity),
-            border: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(20.0))),
-      ),
-    );
+    return FadeAnimation(
+        1.5,
+        Container(
+          padding: EdgeInsets.all(10),
+          child: TextField(
+            controller: _usernameController,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelText: 'username',
+              icon: Icon(Icons.perm_identity),
+            ),
+          ),
+        ));
   }
 
   Widget _passwordField() {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: TextField(
-        controller: _passwordController,
-        keyboardType: TextInputType.text,
-        obscureText: true,
-        decoration: InputDecoration(
-            labelText: 'password',
-            icon: Icon(Icons.lock),
-            border: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(20.0))),
-      ),
-    );
+    return FadeAnimation(
+        1.5,
+        Container(
+          padding: EdgeInsets.all(10),
+          child: TextField(
+            controller: _passwordController,
+            keyboardType: TextInputType.text,
+            obscureText: _obscureText,
+            decoration: InputDecoration(
+              hintText: 'Password',
+              
+              icon: Icon(Icons.lock),
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+                child: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  semanticLabel:
+                      _obscureText ? 'show password' : 'hide password',
+                ),
+              ),
+            ),
+          ),
+        ));
   }
 }

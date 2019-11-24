@@ -8,7 +8,7 @@ class SplashPage extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Image.asset(
-            'assets/icons/ic_launcher.png',
+            'assets/icons/favicon.png',
             fit: BoxFit.cover,
           )
         ],

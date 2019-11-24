@@ -60,6 +60,7 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         title: FlutterBlocLocalizations().appTitle,
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           ArchSampleLocalizationsDelegate(),
           FlutterBlocLocalizationsDelegate(),
