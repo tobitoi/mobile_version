@@ -14,7 +14,7 @@ class VisitRepo {
   }
 
   Future<BongkarMuatResponse> getBongkarMuatRepo() {
-    return _dashboard.bongkarMuat();
+    return _dashboard.bongkarMuatParams();
   }
 
   Future<BongkarMuatResponse> getBongkarMuatRepoFilter(

@@ -34,4 +34,13 @@ class Dashboard {
       throw response.data;
     }
   }
+
+   Future<BongkarMuatResponse> bongkarMuatParams() async {
+    final response = await _baseApi.dio.get(bongkarMuatUrl);
+    if (response.statusCode == 200) {
+      return BongkarMuatResponse.fromJson(response.data);
+    } else {
+      throw response.data;
+    }
+  }
 }
