@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:mobile_version/data/response/login_response.dart';
 import '../config.dart';
 import '../constant.dart';
@@ -12,6 +11,6 @@ class LoginApi {
     if (response.statusCode == 200) {
       return LoginResponse.fromJson(response.data);
     }
-    throw DioErrorType.RESPONSE;
+     throw response.statusMessage;
   }
 }

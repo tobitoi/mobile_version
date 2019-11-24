@@ -28,18 +28,23 @@ class BaseApi {
       }
       return option;
     }, onError: (DioError e) {
-      var errorResponse = e.response.data['message'];
-      if (errorResponse != null) {
-        if (e.response.statusCode == 401) {
-          BuildContext context;
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).popAndPushNamed("/");
-            BlocProvider<AuthenticationBloc>(builder: (context) => AuthenticationBloc()..add(LoggedOut()));
-          });
+      
+        if (e.response != null) {
+          var errorResponse = e.response.data['message'];
+          if (e.response.statusCode == 401) {
+            BuildContext context;
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).popAndPushNamed("/");
+              BlocProvider<AuthenticationBloc>(
+                  builder: (context) => AuthenticationBloc()..add(LoggedOut()));
+            });
+          }
+          return errorResponse;
+        }else {
+          return e.error;
         }
-        return errorResponse;
       }
-    }));
+    ));
     _setupLoggingInterceptor();
   }
 

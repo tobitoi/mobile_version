@@ -11,19 +11,21 @@ import 'package:mobile_version/utils/utils.dart';
 
 import 'SubscribeSeries.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final format1 = DateFormat("yyyyMMddHHmm");
   final format = DateFormat("yyyy-MM-dd HH:mm:ss");
-  final startDateTimeController = TextEditingController();
-  final endDateTimeController = TextEditingController();
-
+  var startDate, endDate;
   @override
   Widget build(BuildContext context) {
     _onFilterButtonPressed() {
-      DateTime startDate = DateTime.parse(startDateTimeController.text);
-      DateTime endDate = DateTime.parse(endDateTimeController.text);
       BlocProvider.of<HomeBloc>(context).add(FilterBongkarMuat(
-          startDate: format1.format(startDate).toString(), endDate: format1.format(endDate).toString()));
+          startDate: format1.format(startDate),
+          endDate: format1.format(endDate)));
     }
 
     return Scaffold(
@@ -248,27 +250,18 @@ class HomePage extends StatelessWidget {
         ));
   }
 
-  Widget _buildTile(Widget child, {Function() onTap}) {
+  Widget _buildTile(Widget child) {
     return Material(
         elevation: 14.0,
         borderRadius: BorderRadius.circular(12.0),
         shadowColor: Color(0x802196F3),
-        child: InkWell(
-            // Do onTap() if it isn't null, otherwise do print()
-            onTap: onTap != null
-                ? () => onTap()
-                : () {
-                    print('Not set yet');
-                  },
-            child: child));
+        child: child);
   }
 
   Widget _buildStartDatePicker() {
-    var stardate;
     return Container(
       padding: EdgeInsets.only(left: 20, right: 20, top: 15),
       child: DateTimeField(
-        controller: startDateTimeController,
         format: format,
         decoration: InputDecoration(
             hintText: "Please input Startdatetime",
@@ -280,35 +273,28 @@ class HomePage extends StatelessWidget {
               firstDate: DateTime(1900),
               initialDate: currentStardateValue ?? DateTime.now(),
               lastDate: DateTime(2100));
-
           if (date != null) {
             final time = await showTimePicker(
               context: context,
               initialTime: TimeOfDay.fromDateTime(
                   currentStardateValue ?? DateTime.now()),
             );
-            stardate = DateTimeField.combine(date, time);
-            startDateTimeController.text = format1.format(stardate);
-            print("startDateTime ${startDateTimeController.text}");
-
+            startDate = DateTimeField.combine(date, time);
             return DateTimeField.combine(date, time);
           } else {
             print("current $currentStardateValue");
             return currentStardateValue;
           }
         },
-        onSaved: (valueStardate) =>
-            startDateTimeController.text = valueStardate.toString(),
+        onSaved: (valueStardate) => startDate = valueStardate,
       ),
     );
   }
 
   Widget _buildEndDatePicker() {
-    var endDate;
     return Container(
       padding: EdgeInsets.only(left: 20, right: 20, top: 15),
       child: DateTimeField(
-        controller: endDateTimeController,
         format: format,
         decoration: InputDecoration(
             hintText: "Please input End Date Time",
@@ -320,7 +306,6 @@ class HomePage extends StatelessWidget {
               firstDate: DateTime(1900),
               initialDate: currentValueEndDate ?? DateTime.now(),
               lastDate: DateTime(2100));
-
           if (date != null) {
             final time = await showTimePicker(
               context: context,
@@ -328,17 +313,13 @@ class HomePage extends StatelessWidget {
                   TimeOfDay.fromDateTime(currentValueEndDate ?? DateTime.now()),
             );
             endDate = DateTimeField.combine(date, time);
-
-            endDateTimeController.text = format1.format(endDate);
-            print("endDateTime ${endDateTimeController.text}");
             return DateTimeField.combine(date, time);
           } else {
             print("current $currentValueEndDate");
             return currentValueEndDate;
           }
         },
-        onSaved: (valueEndDate) =>
-            endDateTimeController.text = valueEndDate.toString(),
+        onSaved: (valueEndDate) => endDate = valueEndDate,
       ),
     );
   }

@@ -68,21 +68,32 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginFailure) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('${state.error.substring(33)}'),
-                    Icon(Icons.error)
-                  ],
-                ),
-                backgroundColor: Colors.red),
-          );
+          var unreachable = state.error.substring(33);
+          if (unreachable.contains(
+              "SocketException: Connection failed (OS Error: Network is unreachable, errno = 101), address = 202.152.38.77, port = 443")) {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text('Network is unreachable'), Icon(Icons.error)],
+              ),
+              backgroundColor: Colors.red,
+            ));
+          } else {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('${state.error.substring(33)}'),
+                      Icon(Icons.error)
+                    ],
+                  ),
+                  backgroundColor: Colors.red),
+            );
+          }
         }
         if (state is LoginLoading) {
           Scaffold.of(context)
-            ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
                 content: Row(

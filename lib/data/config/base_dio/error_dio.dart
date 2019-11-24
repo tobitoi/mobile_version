@@ -21,8 +21,6 @@ class ErrorInterceptor {
   bool checkConnection(DioError error) {
     if (error.type == DioErrorType.DEFAULT) {
       return true;
-    } else if (error.type == DioErrorType.RESPONSE) {
-      return true;
     }
     return false;
   }
