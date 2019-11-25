@@ -1,9 +1,14 @@
+import 'package:meta/meta.dart';
 import 'package:mobile_version/data/class/class.dart';
 import 'package:mobile_version/data/config/config.dart';
 import 'package:mobile_version/data/response/response..dart';
 
 class VisitRepo {
-  Dashboard _dashboard = Dashboard();
+  final Dashboard _dashboard;
+
+  VisitRepo({@required Dashboard dashboard})
+      : assert(dashboard != null),
+        _dashboard = dashboard;
 
   Future<Visit> getVisitRepo() {
     return _dashboard.visit();

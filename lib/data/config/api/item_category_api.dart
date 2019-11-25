@@ -1,11 +1,16 @@
 import 'dart:convert';
+import 'package:meta/meta.dart';
 import 'package:mobile_version/data/class/class.dart';
 import 'package:mobile_version/data/response/response..dart';
 
 import '../config.dart';
 
 class ItemCategoryApi {
-  BaseApi _baseApi = BaseApi();
+  final BaseApi _baseApi;
+
+  ItemCategoryApi({@required BaseApi baseApi})
+      : assert(baseApi != null),
+        _baseApi = baseApi;
 
   Future<List<Item>> getItem(int page, int size) async {
     String itemUrls =

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_version/bloc/auth/auth.dart';
 import 'package:mobile_version/bloc/home/hometobloc.dart';
+import 'package:mobile_version/data/config/config.dart';
 
 import 'package:mobile_version/repository/repo.dart';
 import 'package:mobile_version/ui/login/loginBarrel.dart';
@@ -35,8 +36,30 @@ class SimpleBlocDelegate extends BlocDelegate {
   }
 }
 
+BaseApi baseApi;
+UserRepo userRepository;
+UserApi userApi;
+AuthenticationBloc authenticationBloc;
+LoginApi loginApi;
+VisitRepo visitRepo;
+Dashboard dashboard;
+
 void main() {
-  final userRepository = UserRepo();
+  baseApi = BaseApi(
+    onRevoked: () {
+      authenticationBloc.add(LoggedOut());
+    },
+  );
+  loginApi = LoginApi(baseApi: baseApi);
+  userApi = UserApi(baseApi: baseApi);
+  userRepository = UserRepo(loginApi: loginApi, userApi: userApi);
+  dashboard = Dashboard(baseApi: baseApi);
+  visitRepo = VisitRepo(dashboard: dashboard);
+
+  authenticationBloc = AuthenticationBloc(
+    userRepo: userRepository,
+  );
+
   BlocSupervisor.delegate = SimpleBlocDelegate();
   runApp(App(userRepository: userRepository));
 }
@@ -52,9 +75,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<AuthenticationBloc>(
           builder: (context) {
-            return AuthenticationBloc(
-              userRepo: userRepository,
-            )..add(AppStarted());
+            return authenticationBloc..add(AppStarted());
           },
         ),
       ],
@@ -74,17 +95,17 @@ class App extends StatelessWidget {
                     providers: [
                       BlocProvider<HomeBloc>(
                         builder: (context) =>
-                            HomeBloc(visitRepo: VisitRepo())..add(AddVisit()),
+                            HomeBloc(visitRepo: visitRepo)..add(AddVisit()),
                       ),
                       BlocProvider<HomeBloc>(
                           builder: (context) =>
-                              HomeBloc(visitRepo: VisitRepo())..add(Fetch())),
+                              HomeBloc(visitRepo: visitRepo)..add(Fetch())),
                     ],
                     child: HomePage(),
                   );
                 }
                 if (state is AuthenticationUnauthenticated) {
-                  return LoginPage(userRepository: UserRepo());
+                  return LoginPage(userRepository: userRepository);
                 }
                 if (state is AuthenticationLoading) {
                   return LoadingIndicator();

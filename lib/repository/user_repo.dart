@@ -6,10 +6,16 @@ import 'package:mobile_version/data/response/response..dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepo {
-  LoginApi _loginApi = LoginApi();
+  final LoginApi _loginApi;
+  final UserApi _userApi;
+
+  UserRepo({@required LoginApi loginApi, @required UserApi userApi})
+      : assert(loginApi != null),
+        assert(userApi != null),
+        _loginApi = loginApi,
+        _userApi = userApi;
 
   LoginResponse _token;
-  UserApi _userApi = UserApi();
   Future<String> authenticate({
     @required String username,
     @required String password,
@@ -17,7 +23,7 @@ class UserRepo {
     var data = _loginApi.login(username, password);
     await Future.delayed(Duration(seconds: 1));
     _token = await data;
-    if (_token.token != null && _token.user.username !=null) {
+    if (_token.token != null && _token.user.username != null) {
       SharedPreferences.getInstance().then((prefs) {
         var _cacheToken = _token.token;
         var _username = _token.user.email;

@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:mobile_version/data/class/class.dart';
 import 'package:mobile_version/data/config/base_api.dart';
 import 'package:mobile_version/data/response/response..dart';
@@ -5,7 +6,11 @@ import 'package:mobile_version/data/response/response..dart';
 import '../constant.dart';
 
 class Dashboard {
-  BaseApi _baseApi = BaseApi();
+  final BaseApi _baseApi;
+
+  Dashboard({@required BaseApi baseApi})
+      : assert(baseApi != null),
+        _baseApi = baseApi;
 
   Future<Visit> visit() async {
     final response = await _baseApi.dio.get(visitsUrl);
@@ -25,7 +30,8 @@ class Dashboard {
     }
   }
 
-  Future<BongkarMuatResponse> bongkarMuat({String startTime, String endTime}) async {
+  Future<BongkarMuatResponse> bongkarMuat(
+      {String startTime, String endTime}) async {
     final response = await _baseApi.dio.get(bongkarMuatUrl,
         queryParameters: {"startDateTime": startTime, "endDateTime": endTime});
     if (response.statusCode == 200) {
@@ -35,7 +41,7 @@ class Dashboard {
     }
   }
 
-   Future<BongkarMuatResponse> bongkarMuatParams() async {
+  Future<BongkarMuatResponse> bongkarMuatParams() async {
     final response = await _baseApi.dio.get(bongkarMuatUrl);
     if (response.statusCode == 200) {
       return BongkarMuatResponse.fromJson(response.data);
