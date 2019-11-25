@@ -43,10 +43,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> _mapAddVisitToState() async* {
     try {
       await this.visitRepo.addVisitRepo();
-      final Visit visitData = await this.visitRepo.getVisitRepo();
-      final BongkarMuatResponse bongkarMuatData =
-          await this.visitRepo.getBongkarMuatRepo();
-      yield HomeLoaded(visit: visitData, bongkarMuat: bongkarMuatData);
+      yield* _mapLoadHomeToState();
     } catch (error) {
       yield HomeNotLoaded(error: error.toString());
     }
