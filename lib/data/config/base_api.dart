@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'package:mobile_version/bloc/auth/auth.dart';
-import 'package:mobile_version/repository/repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_dio/barrel_dio.dart';
 import 'constant.dart';
@@ -31,7 +29,7 @@ class BaseApi {
     }, onError: (DioError e) {
       if (e.response != null) {
         var errorResponse = e.response.data['message'];
-        if (e.response.statusCode == 403) {
+        if (e.response.statusCode == 401) {
           this.onRevoked();
         }
         return errorResponse;

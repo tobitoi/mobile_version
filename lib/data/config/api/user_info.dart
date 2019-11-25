@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:mobile_version/data/class/class.dart';
-import 'package:mobile_version/ui/widgets/widgets.dart';
 
 import '../config.dart';
 
 class UserApi {
   final BaseApi _baseApi;
-  BuildContext context;
 
   UserApi({@required BaseApi baseApi})
       : assert(baseApi != null),

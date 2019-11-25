@@ -1,9 +1,13 @@
+import 'package:meta/meta.dart';
 import 'package:mobile_version/data/class/class.dart';
 import 'package:mobile_version/data/config/config.dart';
 import 'package:mobile_version/data/response/response..dart';
 
 class ItemCategoryRepos {
-  ItemCategoryApi _itemCategoryApi = ItemCategoryApi();
+  final ItemCategoryApi _itemCategoryApi;
+  ItemCategoryRepos({@required ItemCategoryApi itemCategoryApi})
+      : assert(itemCategoryApi != null),
+        _itemCategoryApi = itemCategoryApi;
 
   Future<List<Item>> getItemRepo(int page, int size) {
     return _itemCategoryApi.getItem(page, size);

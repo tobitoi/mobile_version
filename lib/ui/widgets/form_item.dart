@@ -36,7 +36,6 @@ class FormAddItem extends StatefulWidget {
 class _FormAddItemScreenState extends State<FormAddItem> {
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool get isEditing => widget.isEditing;
-  Future<CategoryResponse> list = ItemCategoryApi().getCategory();
   // ApiService _apiService = ApiService();
   String _itemName;
   String _serialNumber;

@@ -37,13 +37,15 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 BaseApi baseApi;
-UserRepo userRepository;
 UserApi userApi;
 AuthenticationBloc authenticationBloc;
+ItemBloc itemBloc;
 LoginApi loginApi;
-VisitRepo visitRepo;
+ItemCategoryApi itemCategoryApi;
 Dashboard dashboard;
-
+UserRepo userRepository;
+VisitRepo visitRepo;
+ItemCategoryRepos itemCategoryRepos;
 void main() {
   baseApi = BaseApi(
     onRevoked: () {
@@ -52,13 +54,18 @@ void main() {
   );
   loginApi = LoginApi(baseApi: baseApi);
   userApi = UserApi(baseApi: baseApi);
+  itemCategoryApi = ItemCategoryApi(baseApi: baseApi);
+  itemCategoryRepos = ItemCategoryRepos(itemCategoryApi: itemCategoryApi);
   userRepository = UserRepo(loginApi: loginApi, userApi: userApi);
   dashboard = Dashboard(baseApi: baseApi);
   visitRepo = VisitRepo(dashboard: dashboard);
 
+
   authenticationBloc = AuthenticationBloc(
     userRepo: userRepository,
   );
+
+  itemBloc = ItemBloc(itemCategoryRepos: itemCategoryRepos);
 
   BlocSupervisor.delegate = SimpleBlocDelegate();
   runApp(App(userRepository: userRepository));
@@ -117,7 +124,7 @@ class App extends StatelessWidget {
           ArchSampleRoutes.item: (context) {
             return BlocProvider<ItemBloc>(
                 builder: (context) =>
-                    ItemBloc(itemCategoryRepos: ItemCategoryRepos())
+                    ItemBloc(itemCategoryRepos: itemCategoryRepos)
                       ..add(ItemLoad()),
                 child: ItemPage());
           }
