@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:meta/meta.dart';
 import 'package:mobile_version/bloc/auth/auth.dart';
 import 'package:mobile_version/repository/repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,13 +10,13 @@ class BaseApi {
   RequestInterceptor _requestInterceptor = RequestInterceptor();
   ResponseInterceptor _responseInterceptor = ResponseInterceptor();
   ErrorInterceptor _errorInterceptor = ErrorInterceptor();
-  final UserRepo userRepository;
+  VoidCallback onRevoked;
 
   Dio dio;
 
-  BaseApi({this.userRepository}) {
+  BaseApi({@required this.onRevoked}) {
     dio = Dio();
-   
+
     dio.options.baseUrl = BaseUrl;
     dio.interceptors.add(InterceptorsWrapper(onRequest: (Options option) async {
       //to recovery token
@@ -28,20 +29,16 @@ class BaseApi {
       }
       return option;
     }, onError: (DioError e) {
-      
-        if (e.response != null) {
-          var errorResponse = e.response.data['message'];
-          if (e.response.statusCode == 401) {
-           AuthenticationBloc(
-              userRepo: userRepository,
-            )..add(LoggedOut());
-          }
-          return errorResponse;
-        }else {
-          return e.error;
+      if (e.response != null) {
+        var errorResponse = e.response.data['message'];
+        if (e.response.statusCode == 403) {
+          this.onRevoked();
         }
+        return errorResponse;
+      } else {
+        return e.error;
       }
-    ));
+    }));
     _setupLoggingInterceptor();
   }
 

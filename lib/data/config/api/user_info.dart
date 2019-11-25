@@ -5,8 +5,12 @@ import 'package:mobile_version/ui/widgets/widgets.dart';
 import '../config.dart';
 
 class UserApi {
-  BaseApi _baseApi = BaseApi();
+  final BaseApi _baseApi;
   BuildContext context;
+
+  UserApi({@required BaseApi baseApi})
+      : assert(baseApi != null),
+        _baseApi = baseApi;
 
   Future<User> userDetail() async {
     final response = await _baseApi.dio.get(userUrl);
